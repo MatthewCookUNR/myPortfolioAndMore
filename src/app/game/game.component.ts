@@ -10,6 +10,7 @@ export class GameComponent implements OnInit {
   ticTacBoard: string[][];
   canvas: any;
   context: any;
+  gameOver: boolean;
 
   constructor() { }
 
@@ -19,14 +20,17 @@ export class GameComponent implements OnInit {
     this.newGame();
   }
 
+  //Method cleans up game and starts a new one
   newGame() {
     this.ticTacBoard = [["Z","Z","Z"],["Z","Z","Z"],["Z","Z","Z"]];
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.drawBoard()
     this.chooseRandomPlayer();
     this.writeMessage("Player " + this.currentPlayer + " turn");
-    this.drawBoard()
+    this.gameOver = false;
   }
 
+  //Method draws board on the canvas
   drawBoard() {
     this.context.beginPath();
     this.context.moveTo(0, 100);
@@ -49,6 +53,7 @@ export class GameComponent implements OnInit {
     this.context.stroke();
   }
 
+  //Method draws a X in the given spot on the board
   drawX(row, col)
   {
     const xpos : number = 50 + 100 * col;
@@ -64,6 +69,7 @@ export class GameComponent implements OnInit {
     this.context.stroke();
   }
 
+  //Method draws a O in the given spot on the board
   drawO(row, col)
   {
     const xpos : number = 50 + 100 * col;
@@ -73,6 +79,7 @@ export class GameComponent implements OnInit {
     this.context.stroke();
   }
 
+  //Method sets the current player to a new random player
   chooseRandomPlayer()
   {
     const random : number = Math.floor(Math.random()*2);
@@ -84,7 +91,119 @@ export class GameComponent implements OnInit {
     }
   }
 
-  ticTacToe(mousePos)
+  //Function finds spot on the board and draws the correct player
+  //symbol
+  ticTacToe(rowCol)
+  {
+    let row = rowCol.row;
+    let col = rowCol.col;
+    if(this.ticTacBoard[row][col] === 'Z')
+    {
+      if(this.currentPlayer === 'X') {
+        this.ticTacBoard[row][col] = 'X';
+        this.drawX(row, col);
+        this.currentPlayer = 'O';    
+      }
+      else {
+        this.ticTacBoard[row][col] = 'O';
+        this.drawO(row, col);
+        this.currentPlayer = 'X';
+      }
+      this.writeMessage("Player " + this.currentPlayer + " turn");
+    }
+    this.checkForWinner();
+  }
+
+  //Checks to see who if there is a winner and displays if there is one
+  checkForWinner() 
+  {
+    //Checks for horizontal winners
+    for(let i = 0; i < this.ticTacBoard.length; i++)
+    {
+      if(this.ticTacBoard[0][i] === this.ticTacBoard[1][i] && this.ticTacBoard[0][i] === this.ticTacBoard[2][i])
+      {
+        if(this.ticTacBoard[0][i] != 'Z') {
+          this.writeMessage("Player " + this.ticTacBoard[0][i] + " wins!");
+          this.gameOver = true;
+          return;
+        }
+      }
+    }
+
+    //Checks for vertical winners
+    for(let i = 0; i < this.ticTacBoard.length; i++)
+    {
+      if(this.ticTacBoard[i][0] === this.ticTacBoard[i][1] && this.ticTacBoard[i][0] === this.ticTacBoard[i][2])
+      {
+        if(this.ticTacBoard[i][0] != 'Z') {
+          this.writeMessage("Player " + this.ticTacBoard[i][0] + " wins!");
+          this.gameOver = true;
+          return;
+        }
+      }
+    }
+
+    //Checks top left to bottom right diagonal winners
+    if( (this.ticTacBoard[0][0] === this.ticTacBoard[1][1]) && (this.ticTacBoard[1][1] === this.ticTacBoard[2][2]))
+    {
+      if(this.ticTacBoard[0][0] != 'Z') { 
+        this.writeMessage("Player " + this.ticTacBoard[0][0] + " wins!");
+        this.gameOver = true;
+        return;
+      }
+    }
+
+    //Checks bottom left to top right diagonal winners
+    if( (this.ticTacBoard[0][2] === this.ticTacBoard[1][1]) && (this.ticTacBoard[0][2] === this.ticTacBoard[2][0]))
+    {
+      if(this.ticTacBoard[0][2] != 'Z') {
+        this.writeMessage("Player " + this.ticTacBoard[0][2] + " wins!");
+        this.gameOver = true;
+        return;
+      }
+    }
+  }
+
+  //Function handles functionality when board is clicked
+  boardClicked() 
+  {
+    if(this.gameOver === false)
+    {
+      let mousePos = this.getMousePos(this.canvas, event);
+      if(mousePos.y > 300)
+      {
+        console.log("Clicked off of board");
+      }
+      else
+      {
+        let rowCol = this.mousePosToRowCol(mousePos);
+        this.ticTacToe(rowCol);
+      }
+    }
+  }
+
+  //Function gets mouse position relative to the board
+  getMousePos(canvas, event)
+  {
+    var rect = canvas.getBoundingClientRect();
+      return {
+        x: event.clientX - rect.left,
+        y: event.clientY - rect.top
+      };
+  }
+
+  //Function writes given message to bottom of the board
+  writeMessage(message)
+  {
+    this.context.beginPath();
+    this.context.clearRect(0, 300, 300, 200);
+    this.context.font = "30px Arial";
+    this.context.fillText(message, 75, 350);
+  }
+
+  //Function takes mouse position coordinates and translates
+  //it to row and column number on the board
+  mousePosToRowCol(mousePos) 
   {
     let row = -1;
     let col = -1;
@@ -107,89 +226,6 @@ export class GameComponent implements OnInit {
     else {
       row = 2;
     }
-
-    if(this.ticTacBoard[row][col] === 'Z')
-    {
-      if(this.currentPlayer === 'X') {
-        this.ticTacBoard[row][col] = 'X';
-        this.drawX(row, col);
-        this.currentPlayer = 'O';    
-      }
-      else {
-        this.ticTacBoard[row][col] = 'O';
-        this.drawO(row, col);
-        this.currentPlayer = 'X';
-      }
-      this.writeMessage("Player " + this.currentPlayer + " turn");
-    }
-    this.checkForWinner();
-  }
-
-  //Checks to see who if there is a winner and displays if there is one
- checkForWinner() 
- {
-  //Checks for horizontal winners
-  for(let i = 0; i < this.ticTacBoard.length; i++)
-  {
-    if(this.ticTacBoard[0][i] === this.ticTacBoard[1][i] && this.ticTacBoard[0][i] === this.ticTacBoard[2][i])
-    {
-      if(this.ticTacBoard[0][i] != 'Z') {
-        this.writeMessage("Player " + this.ticTacBoard[0][i] + " wins!");
-      }
-    }
-  }
-
-  //Checks for vertical winners
-  for(let i = 0; i < this.ticTacBoard.length; i++)
-  {
-    if(this.ticTacBoard[i][0] === this.ticTacBoard[i][1] && this.ticTacBoard[i][0] === this.ticTacBoard[i][2])
-    {
-      if(this.ticTacBoard[i][0] != 'Z') {
-        this.writeMessage("Player " + this.ticTacBoard[0][i] + " wins!");
-      }
-    }
-  }
-
-  if( (this.ticTacBoard[0][0] === this.ticTacBoard[1][1]) && (this.ticTacBoard[1][1] === this.ticTacBoard[2][2]))
-  {
-    if(this.ticTacBoard[0][0] != 'Z') { 
-    }
-  }
-
-  if( (this.ticTacBoard[0][2] === this.ticTacBoard[1][1]) && (this.ticTacBoard[0][2] === this.ticTacBoard[2][0]))
-  {
-    if(this.ticTacBoard[0][2] != 'Z') {
-      this.writeMessage("Player " + this.ticTacBoard[0][2] + " wins!");
-    }
-  }
-}
-
-boardClicked() {
-  let mousePos = this.getMousePos(this.canvas, event);
-    if(mousePos.y > 300)
-    {
-      console.log("Clicked off of board")
-    }
-    else
-    {
-      this.ticTacToe(mousePos)
-    }
-}
-
-getMousePos(canvas, event)
-{
-  var rect = canvas.getBoundingClientRect();
-    return {
-      x: event.clientX - rect.left,
-      y: event.clientY - rect.top
-    };
-}
-
-  writeMessage(message)
-  {
-    this.context.beginPath();
-    this.context.clearRect(0, 300, 300, 200);
-    this.context.font = "30px Arial";
-    this.context.fillText(message, 75, 350);
+    return {row: row, col: col};
   }
 }
