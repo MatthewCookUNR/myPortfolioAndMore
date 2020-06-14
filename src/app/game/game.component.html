@@ -1,3 +1,9 @@
-<body>
-  <app-tic-tac-toe></app-tic-tac-toe>
+<body id="gameContainer">
+  <h1>Game Player</h1>
+  <select #games (change)="newGame(games.value)">
+    <option>Pick a Game!</option>
+    <option value="TicTacToe">Tic Tac Toe</option>
+    <option value="Chess">Chess Game</option>
+  </select>
+  <template #ticTacToeContainer></template>
 </body>

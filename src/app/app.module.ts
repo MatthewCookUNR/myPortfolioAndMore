@@ -18,6 +18,7 @@ import { ChessComponent } from './game/chess/chess.component';
     TicTacToeComponent,
     ChessComponent
   ],
+  entryComponents: [TicTacToeComponent],
   imports: [
     BrowserModule,
     AppRoutingModule
