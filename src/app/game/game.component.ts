@@ -9,7 +9,6 @@ import { ChessComponent } from './chess/chess.component';
 })
 export class GameComponent implements OnInit, AfterViewInit {
   @ViewChild("ticTacToeContainer", { read: ViewContainerRef }) container;
-  
   gamePlayerId : any;
   currentGameId: any;
   componentRef: ComponentRef<any>;
