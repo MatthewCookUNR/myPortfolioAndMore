@@ -29,10 +29,17 @@ export abstract class ChessPiece {
   markPossibleMoveBoard(): void {
     for(let i = 0; i < 8; i++) {
       for(let j = 0; j < 8; j++) {
+        //Empty space
         if(this.possibleMoveBoard[i][j] == "X") {
           let squareId: string = "sqrRow" + (i+1) + "Col" + (j+1);
           let squareObj = document.getElementById(squareId);
           squareObj.style.backgroundColor= "#8fefd7";
+        }
+        //Enemy space
+        else if(this.possibleMoveBoard[i][j] == "R") {
+          let squareId: string = "sqrRow" + (i+1) + "Col" + (j+1);
+          let squareObj = document.getElementById(squareId);
+          squareObj.style.backgroundColor= "#8B0000";
         }
       }
     }
@@ -40,7 +47,7 @@ export abstract class ChessPiece {
   
   /*
   * 
-  * Older function that was used for movement, kept for later?
+  * Older function that was used for movement, kept for later
   * 
   * 
   moveChessPiece(squareId, currentRow, currentCol, destRow, destCol): void {
@@ -57,6 +64,13 @@ export abstract class ChessPiece {
     }
   }*/
 
+  isPossibleMove(destRow: number, destCol: number): boolean {
+    if(this.possibleMoveBoard[destRow][destCol] == 'X' || this.possibleMoveBoard[destRow][destCol] == 'R') {
+      return true;
+    }
+    return false;
+  }
+
   clearPossibleMoveBoard() {
     this.possibleMoveBoard =
                         [['','','','','','','','']
@@ -67,11 +81,6 @@ export abstract class ChessPiece {
                         ,['','','','','','','','']
                         ,['','','','','','','','']
                         ,['','','','','','','','']];
-  }
-
-  setRowCol(row: number, col: number) {
-    this.row = row;
-    this.column = col;
   }
 
   greet(): void {

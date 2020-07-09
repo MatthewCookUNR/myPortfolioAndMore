@@ -8,9 +8,13 @@ table {
   margin: auto;
 }
 
-span {
+.chessPiece {
   font-size: 52px;
   line-height: 40px;
+}
+
+h2 {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .blackSquare, .whiteSquare {

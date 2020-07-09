@@ -14,31 +14,33 @@ export class ChessComponent implements OnInit {
   possibleBlackMovementsBoard: string[][];
   myChessPieces: ChessPiece[];
   clickedPieceIndex: number;
-  pieceSelected: boolean;
   clickedPieceId: string;
   clickedPieceRow: number;
   clickedPieceCol: number;
+  currentPlayerColorStr: string;
 
   constructor() {
     this.buildPieces();
     this.buildBoards();
-    this.pieceSelected = false;
+    this.clickedPieceIndex = -1;
   }
 
   ngOnInit(): void 
   {
     this.myChessPieces[0].greet();
+    this.newGame(); 
   }
 
+  //Handles on click of square events
   handleSqrClick(event): void {
     var target = event.currentTarget;
     var squareId = target.id;
     let row: number = parseInt(squareId[6])-1;
     let col: number = parseInt(squareId[10])-1;
 
-    //Case 1: Click is a new piece on your side so calculate movement possible
+    //Case 1: Click is a piece on your side so calculate movement possible
     //and mark board
-    if(this.pieceSelected != true) {
+    if(this.myChessBoard[row][col] == this.currentPlayerColorStr) {
       if( this.existPiece(row, col) ) {
         let pieceIndex: number = this.findChessPieceByRowCol(row, col);
         this.cleanBoardMarks();
@@ -47,20 +49,22 @@ export class ChessComponent implements OnInit {
         this.clickedPieceIndex = pieceIndex;
         this.clickedPieceId = squareId;
         this.myChessPieces[pieceIndex].calculatePossibleMovements(this.myChessBoard);
-        this.pieceSelected = true;
       }
     }
-    //Case 2: You've selected piece already, validate if can move and move to space
-    //OR Select new piece if clicked space is different piece
-    else if(true) {
-      this.moveChessPiece(squareId, row, col);
+    //Case 2: You've selected a piece already, validate if can move and move to space
+    //OR there is enemy so destroy and then move
+    else if(this.clickedPieceIndex != -1 && this.myChessPieces[this.clickedPieceIndex].isPossibleMove(row, col)) {
+      if(this.myChessBoard[row][col] != '') {
+        this.destroyChessPiece(squareId, row, col);
+      }
+        this.moveChessPiece(squareId, row, col);
     }
     //Case 3: You clicked on random or enemy space, clear and do nothing
     //OR do nothing
     else {
 
     }
-    console.log(squareId);
+    //console.log(squareId);
   }
 
   //Returns true if piece exists in given row and col
@@ -107,11 +111,10 @@ export class ChessComponent implements OnInit {
                         ,['','','','','','','','']
                         ,['','','','','','','','']
                         ,['','','','','','','','']];
-
   }
 
   //Build ChessPiece objects for game
-  //Note: Only adds white pawns for now
+  //Note: Only adds pawns for now
   buildPieces() {
 
     this.myChessPieces = new Array(16);
@@ -134,27 +137,88 @@ export class ChessComponent implements OnInit {
 
   }
 
+  //Moves selected piece to destination square
   moveChessPiece(destId: string, destRow: number, destCol: number): void {
     
     let currentSqr = document.getElementById(this.clickedPieceId);
     let destSqr = document.getElementById(destId);
     let pieceSpanNode = currentSqr.childNodes[0];
 
+    //Take care of removing from original spot
     currentSqr.removeChild(currentSqr.childNodes[0]);
     let tempBoardStr: string = this.myChessBoard[this.clickedPieceRow][this.clickedPieceCol];
     this.myChessBoard[this.clickedPieceRow][this.clickedPieceCol] = '';
 
+    //Adjust chess of moving piece to new spot
     this.myChessBoard[destRow][destCol] = tempBoardStr;
     this.myChessPieces[this.clickedPieceIndex].row = destRow;
     this.myChessPieces[this.clickedPieceIndex].column = destCol;
     if(this.myChessPieces[this.clickedPieceIndex].type == "Pawn") {
       (this.myChessPieces[this.clickedPieceIndex] as Pawn).isFirstMovement = false;
     }
-    this.myChessPieces[this.clickedPieceIndex].clearPossibleMoveBoard();
     destSqr.appendChild(pieceSpanNode);
 
+    //Clear movement board before moving
     this.cleanBoardMarks();
-    this.pieceSelected = false;
+    this.cleanAllPossibleMoves();
+    this.nextTurn();
+  }
+
+
+  destroyChessPiece(destId: string, destRow: number, destCol: number): void {
+    let destSqr = document.getElementById(destId);
+    let pieceSpanNode = destSqr.childNodes[0];
+    destSqr.removeChild(pieceSpanNode);
+    let pieceIndex: number = this.findChessPieceByRowCol(destRow, destCol);
+
+    //Will possibly look into removing piece from list to make searches
+    //more efficient. Weird errors occured when using line below
+    //that appear to cause from the row/col numbers messed up.
+    //Could be deleting wrong one?
+
+    //console.log("destRow: " + destRow + " - destCol: " + destCol);
+    //console.log("destRow: " + this.myChessPieces[pieceIndex].row + " - destCol: " + this.myChessPieces[pieceIndex].column);
+    //console.log("pieceIndex: " + pieceIndex);
+    //this.myChessPieces.splice(pieceIndex, 1);
+  }
+
+  switchPlayerOnScreen(currentPlayerStr: string) {
+    let myTextSpan: HTMLElement = document.getElementById("currentPlayer");
+    if(currentPlayerStr == 'W') {
+      myTextSpan.innerHTML="White";
+    }
+    else {
+      myTextSpan.innerHTML="Black";
+    }
+  }
+
+  nextTurn() {
+    if(this.currentPlayerColorStr == 'W') {
+      this.currentPlayerColorStr = 'B'
+      this.switchPlayerOnScreen('B');
+    }
+    else {
+      this.currentPlayerColorStr = 'W'
+      this.switchPlayerOnScreen('W');
+    }
+  }
+
+  newGame() {
+    let randomPlayer = Math.floor(Math.random() * 2);
+    if(randomPlayer == 0) {
+      this.currentPlayerColorStr='W';
+      this.switchPlayerOnScreen('W');
+    }
+    else {
+      this.currentPlayerColorStr='B';
+      this.switchPlayerOnScreen('B');
+    }
+  }
+
+  cleanAllPossibleMoves(): void {
+    for(let i = 0; i < this.myChessPieces.length; i++) {
+      this.myChessPieces[i].clearPossibleMoveBoard();
+    }
   }
 
 }
