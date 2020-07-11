@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {ChessPiece} from "./ChessPiece";
-import {Pawn} from "./Pawn";
-import { Rook } from './Rook';
+import {ChessPiece} from "./ChessPieceClasses/ChessPiece";
+import {Pawn} from "./ChessPieceClasses/Pawn"
+import { Rook } from './ChessPieceClasses/Rook';
+import { Knight } from './ChessPieceClasses/Knight';
 
 @Component({
   selector: 'app-chess',
@@ -119,7 +120,7 @@ export class ChessComponent implements OnInit {
   //Note: Only adds pawns for now
   buildPieces() {
 
-    this.myChessPieces = new Array(20);
+    this.myChessPieces = new Array(24);
 
     //Creates Pawns
     for(let i = 0; i < 8; i++) {
@@ -127,10 +128,17 @@ export class ChessComponent implements OnInit {
       this.myChessPieces[i+8] = new Pawn(6, i, true);
     }
 
+    //Create Rooks
     this.myChessPieces[16] = new Rook(0, 0, false);
     this.myChessPieces[17] = new Rook(0, 7, false);
     this.myChessPieces[18] = new Rook(7, 0, true);
     this.myChessPieces[19] = new Rook(7, 7, true);
+
+    //Create Knights
+    this.myChessPieces[20] = new Knight(0, 1, false);
+    this.myChessPieces[21] = new Knight(0, 6, false);
+    this.myChessPieces[22] = new Knight(7, 1, true);
+    this.myChessPieces[23] = new Knight(7, 6, true);
 
   }
 
