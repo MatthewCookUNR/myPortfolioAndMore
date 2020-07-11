@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ChessPiece} from "./ChessPiece";
 import {Pawn} from "./Pawn";
+import { Rook } from './Rook';
 
 @Component({
   selector: 'app-chess',
@@ -28,6 +29,7 @@ export class ChessComponent implements OnInit {
   ngOnInit(): void 
   {
     this.myChessPieces[0].greet();
+    this.myChessPieces[16].greet();
     this.newGame(); 
   }
 
@@ -117,13 +119,19 @@ export class ChessComponent implements OnInit {
   //Note: Only adds pawns for now
   buildPieces() {
 
-    this.myChessPieces = new Array(16);
+    this.myChessPieces = new Array(20);
 
     //Creates Pawns
     for(let i = 0; i < 8; i++) {
       this.myChessPieces[i] = new Pawn(1, i, false);
       this.myChessPieces[i+8] = new Pawn(6, i, true);
     }
+
+    this.myChessPieces[16] = new Rook(0, 0, false);
+    this.myChessPieces[17] = new Rook(0, 7, false);
+    this.myChessPieces[18] = new Rook(7, 0, true);
+    this.myChessPieces[19] = new Rook(7, 7, true);
+
   }
 
   //Function resets board back to original color/state
@@ -170,6 +178,8 @@ export class ChessComponent implements OnInit {
     let pieceSpanNode = destSqr.childNodes[0];
     destSqr.removeChild(pieceSpanNode);
     let pieceIndex: number = this.findChessPieceByRowCol(destRow, destCol);
+    this.myChessPieces[pieceIndex].row = -1;
+    this.myChessPieces[pieceIndex].column = -1;
 
     //Will possibly look into removing piece from list to make searches
     //more efficient. Weird errors occured when using line below
@@ -182,6 +192,7 @@ export class ChessComponent implements OnInit {
     //this.myChessPieces.splice(pieceIndex, 1);
   }
 
+  //Switches Current Player on screen to opposite team
   switchPlayerOnScreen(currentPlayerStr: string) {
     let myTextSpan: HTMLElement = document.getElementById("currentPlayer");
     if(currentPlayerStr == 'W') {
@@ -192,6 +203,7 @@ export class ChessComponent implements OnInit {
     }
   }
 
+  //Switches player turn in backend
   nextTurn() {
     if(this.currentPlayerColorStr == 'W') {
       this.currentPlayerColorStr = 'B'
@@ -203,6 +215,7 @@ export class ChessComponent implements OnInit {
     }
   }
 
+  //Picks a random player and starts game
   newGame() {
     let randomPlayer = Math.floor(Math.random() * 2);
     if(randomPlayer == 0) {
@@ -215,6 +228,7 @@ export class ChessComponent implements OnInit {
     }
   }
 
+  //Clears calculated possible moves for all pieces
   cleanAllPossibleMoves(): void {
     for(let i = 0; i < this.myChessPieces.length; i++) {
       this.myChessPieces[i].clearPossibleMoveBoard();
