@@ -8,8 +8,7 @@ import { ChessComponent } from './chess/chess.component';
   styleUrls: ['./game.component.css']
 })
 export class GameComponent implements OnInit, AfterViewInit {
-  @ViewChild("ticTacToeContainer", { read: ViewContainerRef }) container;
-  
+  @ViewChild("gameContainer", { read: ViewContainerRef }) container;
   gamePlayerId : any;
   currentGameId: any;
   componentRef: ComponentRef<any>;
