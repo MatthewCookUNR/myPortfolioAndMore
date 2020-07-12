@@ -1,0 +1,32 @@
+
+table {
+  width: 600px;
+  height: 600px;
+  border: 10px;
+  border-style: solid;
+  border-color: #B22222;
+  margin: auto;
+}
+
+.chessPiece {
+  font-size: 52px;
+  line-height: 40px;
+}
+
+h2 {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.blackSquare, .whiteSquare {
+  width: 12.5%;
+  height: 12.5%;
+  border-collapse: collapse;
+}
+
+.whiteSquare {
+  background-color: #F8F8FF;
+}
+
+.blackSquare {
+  background-color: #808080;
+}
