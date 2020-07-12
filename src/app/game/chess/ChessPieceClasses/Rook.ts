@@ -33,34 +33,20 @@ export class Rook extends ChessPiece {
     {
       if(tempRow < 7)
       {
-        //Piece is White
-        if(!this.isBlack) 
-        {
-          if(myChessBoard[tempRow+1][this.column] == '') {
-            this.possibleMoveBoard[tempRow+1][this.column] = 'X'
-            tempRow++;
-          }
-          else if(!this.isBlack && myChessBoard[tempRow+1][this.column] == 'B' || myChessBoard[tempRow+1][this.column] == 'BK') {
-            this.possibleMoveBoard[tempRow+1][this.column] = 'R'
-            enemyFound = true
-          }
-          else {
-            sameColorFound = true;
-          }
+        if(myChessBoard[tempRow+1][this.column] == '') {
+          this.possibleMoveBoard[tempRow+1][this.column] = 'X'
+          tempRow++;
         }
-        //Piece is Black
-        else if(this.isBlack) {
-          if(myChessBoard[tempRow+1][this.column] == '') {
-            this.possibleMoveBoard[tempRow+1][this.column] = 'X'
-            tempRow++;
-          }
-          else if(this.isBlack && myChessBoard[tempRow+1][this.column] == 'W' || myChessBoard[tempRow+1][this.column] == 'WK')  {
-            this.possibleMoveBoard[tempRow+1][this.column] = 'R'
-            enemyFound = true
-          }
-          else {
-            sameColorFound = true;
-          }
+        else if(!this.isBlack && (myChessBoard[tempRow+1][this.column] == 'B' || myChessBoard[tempRow+1][this.column] == 'BK')) {
+          this.possibleMoveBoard[tempRow+1][this.column] = 'R'
+          enemyFound = true
+        }
+        else if(this.isBlack && (myChessBoard[tempRow+1][this.column] == 'W' || myChessBoard[tempRow+1][this.column] == 'WK'))  {
+          this.possibleMoveBoard[tempRow+1][this.column] = 'R'
+          enemyFound = true
+        }
+        else {
+          sameColorFound = true;
         }
       }
       else {
@@ -69,7 +55,7 @@ export class Rook extends ChessPiece {
     }
   }
 
-    //Calculate all possible movements in up vertical direction
+  //Calculate all possible movements in up vertical direction
   calculatePossibleUpVertMovements(myChessBoard: string[][]): void {
     let enemyFound: boolean = false;
     let sameColorFound: boolean = false;
@@ -80,34 +66,20 @@ export class Rook extends ChessPiece {
     {
       if(tempRow > 0)
       {
-        //Piece is White
-        if(!this.isBlack) 
-        {
-          if(myChessBoard[tempRow-1][this.column] == '') {
-            this.possibleMoveBoard[tempRow-1][this.column] = 'X'
-            tempRow--;
-          }
-          else if(!this.isBlack && myChessBoard[tempRow-1][this.column] == 'B' || myChessBoard[tempRow-1][this.column] == 'BK') {
-            this.possibleMoveBoard[tempRow-1][this.column] = 'R'
-            enemyFound = true
-          }
-          else {
-            sameColorFound = true;
-          }
+        if(myChessBoard[tempRow-1][this.column] == '') {
+          this.possibleMoveBoard[tempRow-1][this.column] = 'X'
+          tempRow--;
         }
-        //Piece is Black
-        else if(this.isBlack) {
-          if(myChessBoard[tempRow-1][this.column] == '') {
-            this.possibleMoveBoard[tempRow-1][this.column] = 'X'
-            tempRow--;
-          }
-          else if(this.isBlack && myChessBoard[tempRow-1][this.column] == 'W' || myChessBoard[tempRow-1][this.column] == 'WK')  {
-            this.possibleMoveBoard[tempRow-1][this.column] = 'R'
-            enemyFound = true
-          }
-          else {
-            sameColorFound = true;
-          }
+        else if(!this.isBlack && (myChessBoard[tempRow-1][this.column] == 'B' || myChessBoard[tempRow-1][this.column] == 'BK')) {
+          this.possibleMoveBoard[tempRow-1][this.column] = 'R'
+          enemyFound = true
+        }
+        else if(this.isBlack && (myChessBoard[tempRow-1][this.column] == 'W' || myChessBoard[tempRow-1][this.column] == 'WK'))  {
+          this.possibleMoveBoard[tempRow-1][this.column] = 'R'
+          enemyFound = true
+        }
+        else {
+          sameColorFound = true;
         }
       }
       else {
@@ -127,34 +99,20 @@ export class Rook extends ChessPiece {
     {
       if(tempCol < 7)
       {
-        //Piece is White
-        if(!this.isBlack) 
-        {
-          if(myChessBoard[this.row][tempCol+1] == '') {
-            this.possibleMoveBoard[this.row][tempCol+1] = 'X'
-            tempCol++;
-          }
-          else if(myChessBoard[this.row][tempCol+1] == 'B' || myChessBoard[this.row][tempCol+1] == 'BK') {
-            this.possibleMoveBoard[this.row][tempCol+1] = 'R'
-            enemyFound = true
-          }
-          else {
-            sameColorFound = true;
-          }
+        if(myChessBoard[this.row][tempCol+1] == '') {
+          this.possibleMoveBoard[this.row][tempCol+1] = 'X'
+          tempCol++;
         }
-        //Piece is Black
-        else if(this.isBlack) {
-          if(myChessBoard[this.row][tempCol+1] == '') {
-            this.possibleMoveBoard[this.row][tempCol+1] = 'X'
-            tempCol++;
-          }
-          else if(myChessBoard[this.row][tempCol+1] == 'W' || myChessBoard[this.row][tempCol+1] == 'WK')  {
-            this.possibleMoveBoard[this.row][tempCol+1] = 'R'
-            enemyFound = true
-          }
-          else {
-            sameColorFound = true;
-          }
+        else if(!this.isBlack && (myChessBoard[this.row][tempCol+1] == 'B' || myChessBoard[this.row][tempCol+1] == 'BK')) {
+          this.possibleMoveBoard[this.row][tempCol+1] = 'R'
+          enemyFound = true
+        }
+        else if(this.isBlack && (myChessBoard[this.row][tempCol+1] == 'W' || myChessBoard[this.row][tempCol+1] == 'WK'))  {
+          this.possibleMoveBoard[this.row][tempCol+1] = 'R'
+          enemyFound = true
+        }
+        else {
+          sameColorFound = true;
         }
       }
       else {
@@ -174,34 +132,20 @@ export class Rook extends ChessPiece {
     {
       if(tempCol > 0)
       {
-        //Piece is White
-        if(!this.isBlack) 
-        {
-          if(myChessBoard[this.row][tempCol-1] == '') {
-            this.possibleMoveBoard[this.row][tempCol-1] = 'X'
-            tempCol--;
-          }
-          else if(myChessBoard[this.row][tempCol-1] == 'B') {
-            this.possibleMoveBoard[this.row][tempCol-1] = 'R'
-            enemyFound = true
-          }
-          else {
-            sameColorFound = true;
-          }
+        if(myChessBoard[this.row][tempCol-1] == '') {
+          this.possibleMoveBoard[this.row][tempCol-1] = 'X'
+          tempCol--;
         }
-        //Piece is Black
-        else if(this.isBlack) {
-          if(myChessBoard[this.row][tempCol-1] == '') {
-            this.possibleMoveBoard[this.row][tempCol-1] = 'X'
-            tempCol--;
-          }
-          else if(myChessBoard[this.row][tempCol-1] == 'W')  {
-            this.possibleMoveBoard[this.row][tempCol-1] = 'R'
-            enemyFound = true
-          }
-          else {
-            sameColorFound = true;
-          }
+        else if(!this.isBlack && (myChessBoard[this.row][tempCol-1] == 'B' || myChessBoard[this.row][tempCol-1] == 'BK')) {
+          this.possibleMoveBoard[this.row][tempCol-1] = 'R'
+          enemyFound = true
+        }
+        else if(this.isBlack && (myChessBoard[this.row][tempCol-1] == 'W' || myChessBoard[this.row][tempCol-1] == 'WK'))  {
+          this.possibleMoveBoard[this.row][tempCol-1] = 'R'
+          enemyFound = true
+        }
+        else {
+          sameColorFound = true;
         }
       }
       else {
