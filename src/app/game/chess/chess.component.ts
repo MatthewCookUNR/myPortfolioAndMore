@@ -3,6 +3,8 @@ import {ChessPiece} from "./ChessPieceClasses/ChessPiece";
 import {Pawn} from "./ChessPieceClasses/Pawn"
 import { Rook } from './ChessPieceClasses/Rook';
 import { Knight } from './ChessPieceClasses/Knight';
+import { Bishop } from './ChessPieceClasses/Bishop';
+import { Queen } from './ChessPieceClasses/Queen';
 
 @Component({
   selector: 'app-chess',
@@ -120,7 +122,7 @@ export class ChessComponent implements OnInit {
   //Note: Only adds pawns for now
   buildPieces() {
 
-    this.myChessPieces = new Array(24);
+    this.myChessPieces = new Array(30);
 
     //Creates Pawns
     for(let i = 0; i < 8; i++) {
@@ -139,6 +141,16 @@ export class ChessComponent implements OnInit {
     this.myChessPieces[21] = new Knight(0, 6, false);
     this.myChessPieces[22] = new Knight(7, 1, true);
     this.myChessPieces[23] = new Knight(7, 6, true);
+
+    //Create Knights
+    this.myChessPieces[24] = new Bishop(0, 2, false);
+    this.myChessPieces[25] = new Bishop(0, 5, false);
+    this.myChessPieces[26] = new Bishop(7, 2, true);
+    this.myChessPieces[27] = new Bishop(7, 5, true);
+
+    //Create Queens
+    this.myChessPieces[28] = new Queen(0, 3, false);
+    this.myChessPieces[29] = new Queen(7, 3, true);
 
   }
 
