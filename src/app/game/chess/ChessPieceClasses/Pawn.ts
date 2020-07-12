@@ -17,10 +17,12 @@ export class Pawn extends ChessPiece {
     if(this.isBlack && this.row != 0) {
       if(myChessBoard[this.row-1][this.column] == '')
       {
-        markMoveBoard[this.row-1][this.column] = "X";
-        //Check if first movement for extra space rule
-        if(this.isFirstMovement && myChessBoard[this.row-2][this.column] != 'W') {
-          markMoveBoard[this.row-2][this.column] = "X";
+        if(!markAttackBoard) {
+          //Same logic as above
+          markMoveBoard[this.row-1][this.column] = "X";
+          if(this.isFirstMovement && myChessBoard[this.row-2][this.column] != 'W') {
+            markMoveBoard[this.row-2][this.column] = "X";
+          }
         }
       }
       //Case 2: Marking spot with enemy on left (red)
@@ -32,6 +34,13 @@ export class Pawn extends ChessPiece {
           }
           else {
             markMoveBoard[this.row-1][this.column-1] = "R";
+          }
+        }
+        //If Calculating globally, mark diagonals for King checking
+        if(markAttackBoard) {
+          if(myChessBoard[this.row-1][this.column-1] == '')
+          {
+            markMoveBoard[this.row-1][this.column-1] = "X";
           }
         }
 
@@ -47,6 +56,13 @@ export class Pawn extends ChessPiece {
             markMoveBoard[this.row-1][this.column+1] = "R";
           }
         }
+        //If Calculating globally, mark diagonals for King checking
+        if(markAttackBoard) {
+          if(myChessBoard[this.row-1][this.column+1] == '')
+          {
+            markMoveBoard[this.row-1][this.column+1] = "X";
+          }
+        }
       }
     }
     //              WHITE PIECE CODE
@@ -56,12 +72,13 @@ export class Pawn extends ChessPiece {
       //Case 1: Marking spot with no enemy (cyan)
       if(myChessBoard[this.row+1][this.column] == '')
       {
-        //Same logic as above
-        markMoveBoard[this.row+1][this.column] = "X";
-        if(this.isFirstMovement && myChessBoard[this.row+2][this.column] != 'B') {
-          markMoveBoard[this.row+2][this.column] = "X";
+        if(!markAttackBoard) {
+          //Same logic as above
+          markMoveBoard[this.row+1][this.column] = "X";
+          if(this.isFirstMovement && myChessBoard[this.row+2][this.column] != 'B') {
+            markMoveBoard[this.row+2][this.column] = "X";
+          }
         }
-        
       }
       //Case 2: Marking spot with enemy on left (red)
       if (this.column > 0) 
@@ -74,6 +91,13 @@ export class Pawn extends ChessPiece {
             markMoveBoard[this.row+1][this.column-1] = "R";
           }
         }
+        //If Calculating globally, mark diagonals for King checking
+        if(markAttackBoard) {
+          if(myChessBoard[this.row+1][this.column-1] == '')
+          {
+            markMoveBoard[this.row+1][this.column-1] = "X";
+          }
+        }
       }
       //Case 2: Marking spot with enemy on left (red)
       if(this.column < 7)
@@ -84,6 +108,13 @@ export class Pawn extends ChessPiece {
           }
           else {
             markMoveBoard[this.row+1][this.column+1] = "R";
+          }
+        }
+        //If Calculating globally, mark diagonals for King checking
+        if(markAttackBoard) {
+          if(myChessBoard[this.row+1][this.column+1] == '')
+          {
+            markMoveBoard[this.row+1][this.column+1] = "X";
           }
         }
       }

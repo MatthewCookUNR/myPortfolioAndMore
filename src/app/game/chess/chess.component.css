@@ -1,5 +1,10 @@
 
+#chessBoard {
+  width: 50%;
+}
+
 table {
+  text-align: center;
   width: 600px;
   height: 600px;
   border: 10px;
@@ -13,8 +18,12 @@ table {
   line-height: 40px;
 }
 
-h2 {
+header, .sidebarContent {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+header {
+  text-align: center;
 }
 
 .blackSquare, .whiteSquare {
@@ -29,4 +38,24 @@ h2 {
 
 .blackSquare {
   background-color: #808080;
+}
+
+#mainContent {
+  width: 100%;
+  height: auto;
+  display: flex;
+}
+
+.sidebar {
+  background-color: #FFB6C1;
+  width: 25%;
+  height: 600px;
+}
+
+.sidebarContent {
+  margin-left: 20px;
+}
+
+.sidebar ul li {
+  list-style: none;
 }

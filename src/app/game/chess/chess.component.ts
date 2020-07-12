@@ -5,6 +5,7 @@ import { Rook } from './ChessPieceClasses/Rook';
 import { Knight } from './ChessPieceClasses/Knight';
 import { Bishop } from './ChessPieceClasses/Bishop';
 import { Queen } from './ChessPieceClasses/Queen';
+import { King } from './ChessPieceClasses/King';
 
 @Component({
   selector: 'app-chess',
@@ -24,6 +25,8 @@ export class ChessComponent implements OnInit {
   clickedPieceRow: number;
   clickedPieceCol: number;
   currentPlayerColorStr: string;
+  blackKingCheck: boolean = false;
+  whiteKingCheck: boolean = false;
 
   constructor() {
     this.buildPieces();
@@ -48,7 +51,7 @@ export class ChessComponent implements OnInit {
 
     //Case 1: Click is a piece on your side so calculate movement possible
     //and mark board
-    if(this.myChessBoard[row][col] == this.currentPlayerColorStr) {
+    if((this.myChessBoard[row][col] == this.currentPlayerColorStr) || (this.myChessBoard[row][col] == (this.currentPlayerColorStr + 'K'))) {
       if( this.existPiece(row, col) ) {
         let pieceIndex: number = this.findChessPieceByRowCol(row, col);
         this.cleanBoardMarks();
@@ -56,7 +59,17 @@ export class ChessComponent implements OnInit {
         this.clickedPieceCol = col;
         this.clickedPieceIndex = pieceIndex;
         this.clickedPieceId = squareId;
-        this.myChessPieces[pieceIndex].calculatePossibleMovements(this.myChessBoard, this.myChessPieces[pieceIndex].possibleMoveBoard, null);
+        if(this.myChessPieces[pieceIndex].type == 'King') {
+          if(this.currentPlayerColorStr == 'W') {
+            this.myChessPieces[pieceIndex].calculatePossibleMovements(this.myChessBoard, this.myChessPieces[pieceIndex].possibleMoveBoard, null, this.possibleBlackMovementsBoard);
+          }
+          else {
+            this.myChessPieces[pieceIndex].calculatePossibleMovements(this.myChessBoard, this.myChessPieces[pieceIndex].possibleMoveBoard, null, this.possibleWhiteMovementsBoard);
+          }
+        }
+        else {
+          this.myChessPieces[pieceIndex].calculatePossibleMovements(this.myChessBoard, this.myChessPieces[pieceIndex].possibleMoveBoard, null, null);
+        }
         this.myChessPieces[pieceIndex].markPossibleMoveBoard();
       }
     }
@@ -183,6 +196,10 @@ export class ChessComponent implements OnInit {
     //Create Queens
     this.myChessPieces[28] = new Queen(0, 3, false);
     this.myChessPieces[29] = new Queen(7, 3, true);
+
+    //Create Queens
+    this.myChessPieces[30] = new King(0, 4, false);
+    this.myChessPieces[31] = new King(7, 4, true);
   }
 
   //Function resets board back to original color/state
@@ -330,21 +347,69 @@ export class ChessComponent implements OnInit {
   }
 
   calculateAllPossibleMoves() {
-    for(let i = 0; i < this.myChessPieces.length; i++) {
+    //All Pieces minus Kings
+    for(let i = 0; i < this.myChessPieces.length-2; i++) {
       if(this.myChessPieces[i].isBlack) {
-        this.myChessPieces[i].calculatePossibleMovements(this.myChessBoard, this.possibleBlackMovementsBoard, this.possibleBlackAttacksBoard);
+        this.myChessPieces[i].calculatePossibleMovements(this.myChessBoard, this.possibleBlackMovementsBoard, this.possibleBlackAttacksBoard, null);
       }
       else {
-        this.myChessPieces[i].calculatePossibleMovements(this.myChessBoard, this.possibleWhiteMovementsBoard, this.possibleWhiteAttacksBoard);
+        this.myChessPieces[i].calculatePossibleMovements(this.myChessBoard, this.possibleWhiteMovementsBoard, this.possibleWhiteAttacksBoard, null);
       }
     }
-    console.log("White Attacks\n")
-    console.log(this.possibleWhiteAttacksBoard);
-    console.log("Black Attacks\n");
-    console.log(this.possibleBlackAttacksBoard);
+
+    //White King
+    this.myChessPieces[30].calculatePossibleMovements(this.myChessBoard, this.possibleWhiteMovementsBoard, this.possibleWhiteAttacksBoard, this.possibleBlackMovementsBoard);
+    //Black King
+    this.myChessPieces[31].calculatePossibleMovements(this.myChessBoard, this.possibleBlackMovementsBoard, this.possibleBlackAttacksBoard, this.possibleWhiteMovementsBoard);
+
+    console.log("White Moves\n")
+    console.log(this.possibleWhiteMovementsBoard);
+    console.log("Black Noves\n");
+    console.log(this.possibleBlackMovementsBoard);
+
+    this.areKingsInCheck();
+    this.updateKingStatus();
 
   }
 
-  clearAll
+  areKingsInCheck(): void {
+    if(this.possibleBlackAttacksBoard[this.myChessPieces[30].row][this.myChessPieces[30].column] == 'R') {
+      this.whiteKingCheck = true;
+    }
+    else {
+      this.whiteKingCheck = false;
+    }
+    
+    if(this.possibleWhiteAttacksBoard[this.myChessPieces[31].row][this.myChessPieces[31].column] == 'R') {
+      this.blackKingCheck = true;
+    }
+    else {
+      this.blackKingCheck = false;
+    }
+  }
+
+  updateKingStatus(): void {
+    if((this.myChessPieces[30] as King).isCheckMate) {
+      document.getElementById('whiteKingStatus').innerHTML = "Checkmate, Game Over";
+      return
+    }
+    else if(this.whiteKingCheck) {
+      document.getElementById('whiteKingStatus').innerHTML = "Check, must move King";
+    }
+    else {
+      document.getElementById('whiteKingStatus').innerHTML = "Safe";
+    }
+
+    if((this.myChessPieces[31] as King).isCheckMate) {
+      document.getElementById('blackKingStatus').innerHTML = "Checkmate, Game Over";
+      return;
+    }
+    else if(this.blackKingCheck) {
+      document.getElementById('blackKingStatus').innerHTML = "Check, must move King";
+    }
+    else {
+      document.getElementById('blackKingStatus').innerHTML = "Safe";
+    }
+  }
 
 }
