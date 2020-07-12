@@ -16,6 +16,8 @@ export class ChessComponent implements OnInit {
   myChessBoard: string[][];
   possibleWhiteMovementsBoard: string[][];
   possibleBlackMovementsBoard: string[][];
+  possibleWhiteAttacksBoard: string[][];
+  possibleBlackAttacksBoard: string[][];
   myChessPieces: ChessPiece[];
   clickedPieceIndex: number;
   clickedPieceId: string;
@@ -34,6 +36,7 @@ export class ChessComponent implements OnInit {
     this.myChessPieces[0].greet();
     this.myChessPieces[16].greet();
     this.newGame(); 
+    this.calculateAllPossibleMoves();
   }
 
   //Handles on click of square events
@@ -53,7 +56,8 @@ export class ChessComponent implements OnInit {
         this.clickedPieceCol = col;
         this.clickedPieceIndex = pieceIndex;
         this.clickedPieceId = squareId;
-        this.myChessPieces[pieceIndex].calculatePossibleMovements(this.myChessBoard);
+        this.myChessPieces[pieceIndex].calculatePossibleMovements(this.myChessBoard, this.myChessPieces[pieceIndex].possibleMoveBoard, null);
+        this.myChessPieces[pieceIndex].markPossibleMoveBoard();
       }
     }
     //Case 2: You've selected a piece already, validate if can move and move to space
@@ -105,17 +109,45 @@ export class ChessComponent implements OnInit {
                         ,['B','B','B','B','B','B','B','B']
                         ,['B','B','B','B','BK','B','B','B']];
 
-    //2D Array (Table) used to map possible movements of white and black pieces
+    //2D Array (Table) used to map possible movements and attacks of white and black pieces
     //This is needed to find out if King is in check/checkmate
-    this.possibleBlackMovementsBoard, this.possibleWhiteMovementsBoard =
-                        [['','','','','','','','']
-                        ,['','','','','','','','']
-                        ,['','','','','','','','']
-                        ,['','','','','','','','']
-                        ,['','','','','','','','']
-                        ,['','','','','','','','']
-                        ,['','','','','','','','']
-                        ,['','','','','','','','']];
+    this.possibleBlackMovementsBoard =
+                          [['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']]; 
+    this.possibleWhiteMovementsBoard =
+                          [['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']];
+    this.possibleWhiteAttacksBoard  =
+                          [['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']];
+    this.possibleBlackAttacksBoard =
+                          [['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']];
+    
   }
 
   //Build ChessPiece objects for game
@@ -151,7 +183,6 @@ export class ChessComponent implements OnInit {
     //Create Queens
     this.myChessPieces[28] = new Queen(0, 3, false);
     this.myChessPieces[29] = new Queen(7, 3, true);
-
   }
 
   //Function resets board back to original color/state
@@ -188,7 +219,9 @@ export class ChessComponent implements OnInit {
 
     //Clear movement board before moving
     this.cleanBoardMarks();
-    this.cleanAllPossibleMoves();
+    this.clearAllPiecesPossibleMovement();
+    this.clearPossibleAttacksAndMovements();
+    this.calculateAllPossibleMoves();
     this.nextTurn();
   }
 
@@ -248,11 +281,70 @@ export class ChessComponent implements OnInit {
     }
   }
 
-  //Clears calculated possible moves for all pieces
-  cleanAllPossibleMoves(): void {
+  //Clears calculated possible moves for all individual pieces
+  clearAllPiecesPossibleMovement(): void {
     for(let i = 0; i < this.myChessPieces.length; i++) {
       this.myChessPieces[i].clearPossibleMoveBoard();
     }
   }
+
+  clearPossibleAttacksAndMovements() {
+    //2D Array (Table) used to map possible movements of white and black pieces
+    //This is needed to find out if King is in check/checkmate
+    this.possibleBlackMovementsBoard =
+                          [['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']]; 
+    this.possibleWhiteMovementsBoard =
+                          [['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']];
+    this.possibleWhiteAttacksBoard  =
+                          [['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']];
+    this.possibleBlackAttacksBoard =
+                          [['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']
+                          ,['','','','','','','','']];
+  }
+
+  calculateAllPossibleMoves() {
+    for(let i = 0; i < this.myChessPieces.length; i++) {
+      if(this.myChessPieces[i].isBlack) {
+        this.myChessPieces[i].calculatePossibleMovements(this.myChessBoard, this.possibleBlackMovementsBoard, this.possibleBlackAttacksBoard);
+      }
+      else {
+        this.myChessPieces[i].calculatePossibleMovements(this.myChessBoard, this.possibleWhiteMovementsBoard, this.possibleWhiteAttacksBoard);
+      }
+    }
+    console.log("White Attacks\n")
+    console.log(this.possibleWhiteAttacksBoard);
+    console.log("Black Attacks\n");
+    console.log(this.possibleBlackAttacksBoard);
+
+  }
+
+  clearAll
 
 }

@@ -10,8 +10,8 @@ export class King extends ChessPiece {
   //TBA, movement logic will require determination 
   //of all enemy pieces movement (main code required) i.e. they cannot
   //move into check
-  calculatePossibleMovements(myChessBoard: string[][]): void {
-
+  calculatePossibleMovements(myChessBoard: string[][], markBoard: string[][], markAttackBoard: string[][] ): void {
+    
   }
 
 }

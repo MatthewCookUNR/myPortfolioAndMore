@@ -8,16 +8,15 @@ export class Knight extends ChessPiece {
   }
 
   //Calculates all possible movements for Rook
-  calculatePossibleMovements(myChessBoard: string[][]): void {
-    this.calculateUpLsMovement(myChessBoard);
-    this.calculateDownLsMovement(myChessBoard);
-    this.calculateLeftLsMovement(myChessBoard);
-    this.calculateRightLsMovement(myChessBoard);
-    this.markPossibleMoveBoard();
+  calculatePossibleMovements(myChessBoard: string[][], markBoard: string[][] ): void {
+    this.calculateUpLsMovement(myChessBoard, markBoard);
+    this.calculateDownLsMovement(myChessBoard, markBoard);
+    this.calculateLeftLsMovement(myChessBoard, markBoard);
+    this.calculateRightLsMovement(myChessBoard, markBoard);
   }
 
   //Calculate possible movements in up Ls
-  calculateUpLsMovement(myChessBoard: string[][]): void {
+  calculateUpLsMovement(myChessBoard: string[][], markBoard: string[][] ): void {
     if(this.row-2 >= 0) {
       if(this.column-1 >= 0) {
         if(myChessBoard[this.row-2][this.column-1] == '') {
@@ -45,7 +44,7 @@ export class Knight extends ChessPiece {
   }
 
   //Calculate possible movements in down Ls
-  calculateDownLsMovement(myChessBoard: string[][]): void {
+  calculateDownLsMovement(myChessBoard: string[][], markBoard: string[][] ): void {
     if(this.row+2 <= 7) {
       if(this.column-1 >= 0) {
         if(myChessBoard[this.row+2][this.column-1] == '') {
@@ -73,7 +72,7 @@ export class Knight extends ChessPiece {
   }
 
   //Calculate possible movements in left Ls
-  calculateLeftLsMovement(myChessBoard: string[][]): void {
+  calculateLeftLsMovement(myChessBoard: string[][], markBoard: string[][] ): void {
 
     //White Piece
     if(this.column-2 >= 0) {
@@ -103,7 +102,7 @@ export class Knight extends ChessPiece {
   }
 
   //Calculate possible movements in right Ls
-  calculateRightLsMovement(myChessBoard: string[][]): void {
+  calculateRightLsMovement(myChessBoard: string[][], markBoard: string[][] ): void {
     if(this.column+2 <= 7) {
       if(this.row-1 >= 0) {
         if(myChessBoard[this.row-1][this.column+2] == '') {
