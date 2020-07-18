@@ -28,7 +28,7 @@ export class Pawn extends ChessPiece {
       //Case 2: Marking spot with enemy on left (red)
       if (this.column > 0) 
       {
-        if(myChessBoard[this.row-1][this.column-1] =='W') {
+        if(myChessBoard[this.row-1][this.column-1] =='W' || myChessBoard[this.row-1][this.column-1] =='WK') {
           if(markAttackBoard) {
             markAttackBoard[this.row-1][this.column-1] = "R";
           }
@@ -48,7 +48,7 @@ export class Pawn extends ChessPiece {
       //Case 2: Marking spot with enemy on right (red)
       if(this.column < 7)
       {
-        if(myChessBoard[this.row-1][this.column+1] =='W') {
+        if(myChessBoard[this.row-1][this.column+1] =='W' || myChessBoard[this.row-1][this.column+1] =='WK') {
           if(markAttackBoard) {
             markAttackBoard[this.row-1][this.column+1] = "R";
           }
@@ -83,7 +83,7 @@ export class Pawn extends ChessPiece {
       //Case 2: Marking spot with enemy on left (red)
       if (this.column > 0) 
       {
-        if(myChessBoard[this.row+1][this.column-1] =='B') {
+        if(myChessBoard[this.row+1][this.column-1] =='B' || myChessBoard[this.row+1][this.column-1] =='BK') {
           if(markAttackBoard) {
             markAttackBoard[this.row+1][this.column-1] = "R";
           }
@@ -102,7 +102,7 @@ export class Pawn extends ChessPiece {
       //Case 2: Marking spot with enemy on left (red)
       if(this.column < 7)
       {
-        if(myChessBoard[this.row+1][this.column+1] =='B') {
+        if(myChessBoard[this.row+1][this.column+1] =='B' || myChessBoard[this.row+1][this.column+1] =='BK') {
           if(markAttackBoard) {
             markAttackBoard[this.row+1][this.column+1] = "R";
           }

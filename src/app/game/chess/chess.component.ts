@@ -197,7 +197,7 @@ export class ChessComponent implements OnInit {
     this.myChessPieces[28] = new Queen(0, 3, false);
     this.myChessPieces[29] = new Queen(7, 3, true);
 
-    //Create Queens
+    //Create Kings
     this.myChessPieces[30] = new King(0, 4, false);
     this.myChessPieces[31] = new King(7, 4, true);
   }
@@ -250,6 +250,12 @@ export class ChessComponent implements OnInit {
     let pieceIndex: number = this.findChessPieceByRowCol(destRow, destCol);
     this.myChessPieces[pieceIndex].row = -1;
     this.myChessPieces[pieceIndex].column = -1;
+    if(this.currentPlayerColorStr == 'W') {
+      (this.myChessPieces[30] as King).numSubordinates--;
+    }
+    else {
+      (this.myChessPieces[31] as King).numSubordinates--;
+    }
 
     //Will possibly look into removing piece from list to make searches
     //more efficient. Weird errors occured when using line below
@@ -346,13 +352,16 @@ export class ChessComponent implements OnInit {
                           ,['','','','','','','','']];
   }
 
+  //Functon needs to be updated to handle pieces that have been destroy
+  //i.e. they have xpos = -1 and ypos = -1
+  //Seems to be causing an error when destroying pieces
   calculateAllPossibleMoves() {
     //All Pieces minus Kings
     for(let i = 0; i < this.myChessPieces.length-2; i++) {
-      if(this.myChessPieces[i].isBlack) {
+      if(this.myChessPieces[i].isBlack && this.myChessPieces[i].row != -1) {
         this.myChessPieces[i].calculatePossibleMovements(this.myChessBoard, this.possibleBlackMovementsBoard, this.possibleBlackAttacksBoard, null);
       }
-      else {
+      else if(this.myChessPieces[i].row != -1) {
         this.myChessPieces[i].calculatePossibleMovements(this.myChessBoard, this.possibleWhiteMovementsBoard, this.possibleWhiteAttacksBoard, null);
       }
     }
@@ -375,16 +384,21 @@ export class ChessComponent implements OnInit {
   areKingsInCheck(): void {
     if(this.possibleBlackAttacksBoard[this.myChessPieces[30].row][this.myChessPieces[30].column] == 'R') {
       this.whiteKingCheck = true;
+      (this.myChessPieces[30] as King).isInCheck = true;
     }
     else {
       this.whiteKingCheck = false;
+      (this.myChessPieces[30] as King).isInCheck = false;
+
     }
     
     if(this.possibleWhiteAttacksBoard[this.myChessPieces[31].row][this.myChessPieces[31].column] == 'R') {
       this.blackKingCheck = true;
+      (this.myChessPieces[31] as King).isInCheck = true;
     }
     else {
       this.blackKingCheck = false;
+      (this.myChessPieces[31] as King).isInCheck = false;
     }
   }
 
