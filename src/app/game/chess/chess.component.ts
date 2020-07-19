@@ -167,7 +167,7 @@ export class ChessComponent implements OnInit {
   //Note: Only adds pawns for now
   buildPieces() {
 
-    this.myChessPieces = new Array(30);
+    this.myChessPieces = new Array(32);
 
     //Creates Pawns
     for(let i = 0; i < 8; i++) {
@@ -198,8 +198,8 @@ export class ChessComponent implements OnInit {
     this.myChessPieces[29] = new Queen(7, 3, true);
 
     //Create Kings
-    this.myChessPieces[30] = new King(0, 4, false);
-    this.myChessPieces[31] = new King(7, 4, true);
+    this.myChessPieces[this.myChessPieces.length-2] = new King(0, 4, false);
+    this.myChessPieces[this.myChessPieces.length-1] = new King(7, 4, true);
   }
 
   //Function resets board back to original color/state
@@ -251,10 +251,10 @@ export class ChessComponent implements OnInit {
     this.myChessPieces[pieceIndex].row = -1;
     this.myChessPieces[pieceIndex].column = -1;
     if(this.currentPlayerColorStr == 'W') {
-      (this.myChessPieces[30] as King).numSubordinates--;
+      (this.myChessPieces[this.myChessPieces.length-2] as King).numSubordinates--;
     }
     else {
-      (this.myChessPieces[31] as King).numSubordinates--;
+      (this.myChessPieces[this.myChessPieces.length-1] as King).numSubordinates--;
     }
 
     //Will possibly look into removing piece from list to make searches
@@ -366,44 +366,45 @@ export class ChessComponent implements OnInit {
       }
     }
 
+    this.areKingsInCheck();
+
     //White King
-    this.myChessPieces[30].calculatePossibleMovements(this.myChessBoard, this.possibleWhiteMovementsBoard, this.possibleWhiteAttacksBoard, this.possibleBlackMovementsBoard);
+    this.myChessPieces[this.myChessPieces.length-2].calculatePossibleMovements(this.myChessBoard, this.possibleWhiteMovementsBoard, this.possibleWhiteAttacksBoard, this.possibleBlackMovementsBoard);
     //Black King
-    this.myChessPieces[31].calculatePossibleMovements(this.myChessBoard, this.possibleBlackMovementsBoard, this.possibleBlackAttacksBoard, this.possibleWhiteMovementsBoard);
+    this.myChessPieces[this.myChessPieces.length-1].calculatePossibleMovements(this.myChessBoard, this.possibleBlackMovementsBoard, this.possibleBlackAttacksBoard, this.possibleWhiteMovementsBoard);
 
     console.log("White Moves\n")
     console.log(this.possibleWhiteMovementsBoard);
     console.log("Black Noves\n");
     console.log(this.possibleBlackMovementsBoard);
 
-    this.areKingsInCheck();
     this.updateKingStatus();
 
   }
 
   areKingsInCheck(): void {
-    if(this.possibleBlackAttacksBoard[this.myChessPieces[30].row][this.myChessPieces[30].column] == 'R') {
+    if(this.possibleBlackAttacksBoard[this.myChessPieces[this.myChessPieces.length-2].row][this.myChessPieces[this.myChessPieces.length-2].column] == 'R') {
       this.whiteKingCheck = true;
-      (this.myChessPieces[30] as King).isInCheck = true;
+      (this.myChessPieces[this.myChessPieces.length-2] as King).isInCheck = true;
     }
     else {
       this.whiteKingCheck = false;
-      (this.myChessPieces[30] as King).isInCheck = false;
+      (this.myChessPieces[this.myChessPieces.length-2] as King).isInCheck = false;
 
     }
     
-    if(this.possibleWhiteAttacksBoard[this.myChessPieces[31].row][this.myChessPieces[31].column] == 'R') {
+    if(this.possibleWhiteAttacksBoard[this.myChessPieces[this.myChessPieces.length-1].row][this.myChessPieces[this.myChessPieces.length-1].column] == 'R') {
       this.blackKingCheck = true;
-      (this.myChessPieces[31] as King).isInCheck = true;
+      (this.myChessPieces[this.myChessPieces.length-1] as King).isInCheck = true;
     }
     else {
       this.blackKingCheck = false;
-      (this.myChessPieces[31] as King).isInCheck = false;
+      (this.myChessPieces[this.myChessPieces.length-1] as King).isInCheck = false;
     }
   }
 
   updateKingStatus(): void {
-    if((this.myChessPieces[30] as King).isCheckMate) {
+    if((this.myChessPieces[this.myChessPieces.length-2] as King).isCheckMate) {
       document.getElementById('whiteKingStatus').innerHTML = "Checkmate, Game Over";
       return
     }
@@ -414,7 +415,7 @@ export class ChessComponent implements OnInit {
       document.getElementById('whiteKingStatus').innerHTML = "Safe";
     }
 
-    if((this.myChessPieces[31] as King).isCheckMate) {
+    if((this.myChessPieces[this.myChessPieces.length-1] as King).isCheckMate) {
       document.getElementById('blackKingStatus').innerHTML = "Checkmate, Game Over";
       return;
     }

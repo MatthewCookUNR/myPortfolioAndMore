@@ -4,6 +4,7 @@ export class King extends ChessPiece {
 
   isCheckMate: boolean = false;
   isInCheck: boolean = false;
+  numSubordinates: number = 15;
 
   possibleEnemyMovementsBoard: string[][] =
             [['','','','','','','','']
@@ -39,11 +40,12 @@ export class King extends ChessPiece {
     let result3: boolean = this.calculateUpDownVertMovements(myChessBoard, markBoard, markAttackBoard, possibleEnemyMovementsBoard);
 
     //If no moves are possible AND (King can be hit OR last piece)
-    if((!result1 && !result2 && !result3) ) {
+    if((!result1 && !result2 && !result3) && (this.isInCheck || this.numSubordinates == 0) ) {
       this.isCheckMate = true;
     }
   }
 
+  //Calculate all left side movement (top left to bottom left)
   calculateLeftHorizVertMovements(myChessBoard: string[][], markBoard: string[][], markAttackBoard: string[][], possibleEnemyMovementsBoard: string[][]): boolean {
     let possibleMoveFound: boolean = false;
     //All 1 square left related movements
@@ -143,6 +145,7 @@ export class King extends ChessPiece {
     return possibleMoveFound;
   }
 
+    //Calculate all right side movement (top side to bottom side)
   calculateRightHorizVertMovements(myChessBoard: string[][], markBoard: string[][], markAttackBoard: string[][], possibleEnemyMovementsBoard: string[][]): boolean {
         let possibleMoveFound: boolean = false;
 
@@ -241,6 +244,7 @@ export class King extends ChessPiece {
         return possibleMoveFound;
   }
 
+  //Calculate all up down movement (top middle and bottom middle)
   calculateUpDownVertMovements(myChessBoard: string[][], markBoard: string[][], markAttackBoard: string[][], possibleEnemyMovementsBoard: string[][]): boolean {
     let possibleMoveFound: boolean = false;
     if(this.row+1 <= 7) {
