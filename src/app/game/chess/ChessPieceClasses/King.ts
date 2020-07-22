@@ -15,16 +15,6 @@ export class King extends ChessPiece {
             ,['','','','','','','','']
             ,['','','','','','','','']
             ,['','','','','','','','']];
-
-  possibleEnemyAttacksBoard: string[][] =
-            [['','','','','','','','']
-            ,['','','','','','','','']
-            ,['','','','','','','','']
-            ,['','','','','','','','']
-            ,['','','','','','','','']
-            ,['','','','','','','','']
-            ,['','','','','','','','']
-            ,['','','','','','','','']];
   
   constructor(row: number, column: number, isBlack: boolean) {
     super(row,column,isBlack);
@@ -34,10 +24,10 @@ export class King extends ChessPiece {
   //TBA, movement logic will require determination 
   //of all enemy pieces movement (main code required) i.e. they cannot
   //move into check
-  calculatePossibleMovements(myChessBoard: string[][], markBoard: string[][], markAttackBoard: string[][], possibleEnemyMovementsBoard: string[][]): void {
-    let result1: boolean = this.calculateLeftHorizVertMovements(myChessBoard, markBoard, markAttackBoard, possibleEnemyMovementsBoard);
-    let result2: boolean = this.calculateRightHorizVertMovements(myChessBoard, markBoard, markAttackBoard, possibleEnemyMovementsBoard);
-    let result3: boolean = this.calculateUpDownVertMovements(myChessBoard, markBoard, markAttackBoard, possibleEnemyMovementsBoard);
+  calculatePossibleMovements(myChessBoard: string[][], markBoard: string[][], possibleEnemyMovementsBoard: string[][]): void {
+    let result1: boolean = this.calculateLeftHorizVertMovements(myChessBoard, markBoard, possibleEnemyMovementsBoard);
+    let result2: boolean = this.calculateRightHorizVertMovements(myChessBoard, markBoard, possibleEnemyMovementsBoard);
+    let result3: boolean = this.calculateUpDownVertMovements(myChessBoard, markBoard, possibleEnemyMovementsBoard);
 
     //If no moves are possible AND (King can be hit OR last piece)
     if((!result1 && !result2 && !result3) && (this.isInCheck || this.numSubordinates == 0) ) {
@@ -46,32 +36,23 @@ export class King extends ChessPiece {
   }
 
   //Calculate all left side movement (top left to bottom left)
-  calculateLeftHorizVertMovements(myChessBoard: string[][], markBoard: string[][], markAttackBoard: string[][], possibleEnemyMovementsBoard: string[][]): boolean {
+  calculateLeftHorizVertMovements(myChessBoard: string[][], markBoard: string[][], possibleEnemyMovementsBoard: string[][]): boolean {
     let possibleMoveFound: boolean = false;
     //All 1 square left related movements
+    //Left Horiz
     if(this.column-1 >= 0) {
-      //Left Horiz
-      if(possibleEnemyMovementsBoard[this.row][this.column-1] != 'X') {
+      if(this.isSquareNotNextToKing(myChessBoard, this.row, this.column-1) 
+        && possibleEnemyMovementsBoard[this.row][this.column-1] == '')  {
         if(myChessBoard[this.row][this.column-1] == '') {
           markBoard[this.row][this.column-1] = 'X';
           possibleMoveFound = true;
         }
         else if(!this.isBlack && (myChessBoard[this.row][this.column-1] == 'B' || myChessBoard[this.row][this.column-1] == 'BK' )) {
-          if(markAttackBoard) {
-            markAttackBoard[this.row][this.column-1] = 'R';
-          }
-          else {
-            markBoard[this.row][this.column-1] = 'R';
-          }
+          markBoard[this.row][this.column-1] = 'R';
           possibleMoveFound = true;
         }
         else if(this.isBlack && (myChessBoard[this.row][this.column-1] == 'W' || myChessBoard[this.row][this.column-1] == 'WK')) {
-          if(markAttackBoard) {
-            markAttackBoard[this.row][this.column-1] = 'R';
-          }
-          else {
-            markBoard[this.row][this.column-1] = 'R';
-          }
+          markBoard[this.row][this.column-1] = 'R';
           possibleMoveFound = true;
         }
         else {
@@ -81,27 +62,18 @@ export class King extends ChessPiece {
       }
       //Bottom Left Diag
       if(this.row+1 <= 7) {
-        if(this.isSquareNotNextToKing(myChessBoard, this.row+1, this.column-1) && (possibleEnemyMovementsBoard[this.row+1][this.column-1] != 'X')) {
+        if(this.isSquareNotNextToKing(myChessBoard, this.row+1, this.column-1) 
+          && possibleEnemyMovementsBoard[this.row+1][this.column-1] == '') {
           if(myChessBoard[this.row+1][this.column-1] == '') {
             markBoard[this.row+1][this.column-1] = 'X';
             possibleMoveFound = true;
           }
           else if(!this.isBlack && (myChessBoard[this.row+1][this.column-1] == 'B' || myChessBoard[this.row+1][this.column-1] == 'BK' )) {
-            if(markAttackBoard) {
-              markAttackBoard[this.row+1][this.column-1] = 'R';
-            }
-            else {
-              markBoard[this.row+1][this.column-1] = 'R';
-            }
+            markBoard[this.row+1][this.column-1] = 'R';
             possibleMoveFound = true;
           }
           else if(this.isBlack && (myChessBoard[this.row+1][this.column-1] == 'W' || myChessBoard[this.row+1][this.column-1] == 'WK')) {
-            if(markAttackBoard) {
-              markAttackBoard[this.row+1][this.column-1] = 'R';
-            }
-            else {
-              markBoard[this.row+1][this.column-1] = 'R';
-            }
+            markBoard[this.row+1][this.column-1] = 'R';
             possibleMoveFound = true;
           }
           else {
@@ -112,27 +84,18 @@ export class King extends ChessPiece {
       }
       //Top Left Diag
       if(this.row-1 >= 0) {
-        if(this.isSquareNotNextToKing(myChessBoard, this.row-1, this.column-1) && (possibleEnemyMovementsBoard[this.row-1][this.column-1] != 'X')) {
+        if(this.isSquareNotNextToKing(myChessBoard, this.row-1, this.column-1) 
+          && possibleEnemyMovementsBoard[this.row-1][this.column-1] == '') {
           if(myChessBoard[this.row-1][this.column-1] == '') {
             markBoard[this.row-1][this.column-1] = 'X';
             possibleMoveFound = true;
           }
           else if(!this.isBlack && (myChessBoard[this.row-1][this.column-1] == 'B' || myChessBoard[this.row-1][this.column-1] == 'BK' )) {
-            if(markAttackBoard) {
-              markAttackBoard[this.row-1][this.column-1] = 'R';
-            }
-            else {
-              markBoard[this.row-1][this.column-1] = 'R';
-            }
+            markBoard[this.row-1][this.column-1] = 'R';
             possibleMoveFound = true;
           }
           else if(this.isBlack && (myChessBoard[this.row-1][this.column-1] == 'W' || myChessBoard[this.row-1][this.column-1] == 'WK')) {
-            if(markAttackBoard) {
-              markAttackBoard[this.row-1][this.column-1] = 'R';
-            }
-            else {
-              markBoard[this.row-1][this.column-1] = 'R';
-            }
+            markBoard[this.row-1][this.column-1] = 'R';
             possibleMoveFound = true;
           }
           else {
@@ -146,33 +109,23 @@ export class King extends ChessPiece {
   }
 
     //Calculate all right side movement (top side to bottom side)
-  calculateRightHorizVertMovements(myChessBoard: string[][], markBoard: string[][], markAttackBoard: string[][], possibleEnemyMovementsBoard: string[][]): boolean {
+  calculateRightHorizVertMovements(myChessBoard: string[][], markBoard: string[][], possibleEnemyMovementsBoard: string[][]): boolean {
         let possibleMoveFound: boolean = false;
-
         //Handles all right movements
+        //Right Horiz
         if(this.column+1 <= 7) {
-          //Left Horiz
-          if( this.isSquareNotNextToKing(myChessBoard, this.row, this.column+1) && (possibleEnemyMovementsBoard[this.row][this.column+1] != 'X')) {
+          if( this.isSquareNotNextToKing(myChessBoard, this.row, this.column+1) 
+            && possibleEnemyMovementsBoard[this.row][this.column+1] == 'X') {
             if(myChessBoard[this.row][this.column+1] == '') {
               markBoard[this.row][this.column+1] = 'X';
               possibleMoveFound = true;
             }
             else if(!this.isBlack && (myChessBoard[this.row][this.column+1] == 'B' || myChessBoard[this.row][this.column+1] == 'BK' )) {
-              if(markAttackBoard) {
-                markAttackBoard[this.row][this.column+1] = 'R';
-              }
-              else {
-                markBoard[this.row][this.column+1] = 'R';
-              }
+              markBoard[this.row][this.column+1] = 'R';
               possibleMoveFound = true;
             }
             else if(this.isBlack && (myChessBoard[this.row][this.column+1] == 'W' || myChessBoard[this.row][this.column+1] == 'WK')) {
-              if(markAttackBoard) {
-                markAttackBoard[this.row][this.column+1] = 'R';
-              }
-              else {
-                markBoard[this.row][this.column+1] = 'R';
-              }
+              markBoard[this.row][this.column+1] = 'R';
               possibleMoveFound = true;
             }
             else {
@@ -182,25 +135,16 @@ export class King extends ChessPiece {
           }
           //Bottom Left Diag
           if(this.row+1 <= 7) {
-            if(this.isSquareNotNextToKing(myChessBoard, this.row+1, this.column+1) && (possibleEnemyMovementsBoard[this.row+1][this.column+1] != 'X')) {
+            if(this.isSquareNotNextToKing(myChessBoard, this.row+1, this.column+1) 
+              && possibleEnemyMovementsBoard[this.row+1][this.column+1] == '') {
               if(myChessBoard[this.row+1][this.column+1] == '') {
                 markBoard[this.row+1][this.column+1] = 'X';
               }
               else if(!this.isBlack && (myChessBoard[this.row+1][this.column+1] == 'B' || myChessBoard[this.row+1][this.column+1] == 'BK' )) {
-                if(markAttackBoard) {
-                  markAttackBoard[this.row+1][this.column+1] = 'R';
-                }
-                else {
-                  markBoard[this.row+1][this.column+1] = 'R';
-                }
+                markBoard[this.row+1][this.column+1] = 'R';
               }
               else if(this.isBlack && (myChessBoard[this.row+1][this.column+1] == 'W' || myChessBoard[this.row+1][this.column+1] == 'WK')) {
-                if(markAttackBoard) {
-                  markAttackBoard[this.row+1][this.column+1] = 'R';
-                }
-                else {
-                  markBoard[this.row+1][this.column+1] = 'R';
-                }
+                markBoard[this.row+1][this.column+1] = 'R';
                 possibleMoveFound = true;
               }
               else {
@@ -211,27 +155,18 @@ export class King extends ChessPiece {
           }
           //Top Left Diag
           if(this.row-1 >= 0) {
-            if( this.isSquareNotNextToKing(myChessBoard, this.row-1, this.column+1) && (possibleEnemyMovementsBoard[this.row-1][this.column+1] != 'X')) {
+            if( this.isSquareNotNextToKing(myChessBoard, this.row-1, this.column+1) 
+              && possibleEnemyMovementsBoard[this.row-1][this.column+1] == '') {
               if(myChessBoard[this.row-1][this.column+1] == '') {
                 markBoard[this.row-1][this.column+1] = 'X';
                 possibleMoveFound = true;
               }
               else if(!this.isBlack && (myChessBoard[this.row-1][this.column+1] == 'B' || myChessBoard[this.row-1][this.column+1] == 'BK' )) {
-                if(markAttackBoard) {
-                  markAttackBoard[this.row-1][this.column-1] = 'R';
-                }
-                else {
-                  markBoard[this.row-1][this.column-1] = 'R';
-                }
+                markBoard[this.row-1][this.column-1] = 'R';
                 possibleMoveFound = true;
               }
               else if(this.isBlack && (myChessBoard[this.row-1][this.column+1] == 'W' || myChessBoard[this.row-1][this.column+1] == 'WK')) {
-                if(markAttackBoard) {
-                  markAttackBoard[this.row-1][this.column+1] = 'R';
-                }
-                else {
-                  markBoard[this.row-1][this.column+1] = 'R';
-                }
+                markBoard[this.row-1][this.column+1] = 'R';
                 possibleMoveFound = true;
               }
               else {
@@ -245,30 +180,21 @@ export class King extends ChessPiece {
   }
 
   //Calculate all up down movement (top middle and bottom middle)
-  calculateUpDownVertMovements(myChessBoard: string[][], markBoard: string[][], markAttackBoard: string[][], possibleEnemyMovementsBoard: string[][]): boolean {
+  calculateUpDownVertMovements(myChessBoard: string[][], markBoard: string[][], possibleEnemyMovementsBoard: string[][]): boolean {
     let possibleMoveFound: boolean = false;
     if(this.row+1 <= 7) {
-      if(this.isSquareNotNextToKing(myChessBoard, this.row+1, this.column) && (possibleEnemyMovementsBoard[this.row+1][this.column] != 'X')) {
+      if(this.isSquareNotNextToKing(myChessBoard, this.row+1, this.column) 
+          && possibleEnemyMovementsBoard[this.row+1][this.column] == '') {
         if(myChessBoard[this.row+1][this.column] == '') {
           markBoard[this.row+1][this.column] = 'X';
           possibleMoveFound = true;
         }
         else if(!this.isBlack && (myChessBoard[this.row+1][this.column] == 'B' || myChessBoard[this.row+1][this.column] == 'BK' )) {
-          if(markAttackBoard) {
-            markAttackBoard[this.row+1][this.column] = 'R';
-          }
-          else {
-            markBoard[this.row+1][this.column] = 'R';
-          }
+          markBoard[this.row+1][this.column] = 'R';
           possibleMoveFound = true;
         }
         else if(this.isBlack && (myChessBoard[this.row+1][this.column] == 'W' || myChessBoard[this.row+1][this.column] == 'WK')) {
-          if(markAttackBoard) {
-            markAttackBoard[this.row+1][this.column] = 'R';
-          }
-          else {
-            markBoard[this.row+1][this.column] = 'R';
-          }
+          markBoard[this.row+1][this.column] = 'R';
           possibleMoveFound = true;
         }
         else {
@@ -278,27 +204,18 @@ export class King extends ChessPiece {
       }
     }
     if(this.row-1 >= 0) {
-      if(this.isSquareNotNextToKing(myChessBoard, this.row-1, this.column) && (possibleEnemyMovementsBoard[this.row-1][this.column] != 'X')) {
+      if(this.isSquareNotNextToKing(myChessBoard, this.row-1, this.column) 
+        && possibleEnemyMovementsBoard[this.row-1][this.column] == '') {
         if(myChessBoard[this.row-1][this.column] == '') {
           markBoard[this.row-1][this.column] = 'X';
           possibleMoveFound = true;
         }
         else if(!this.isBlack && (myChessBoard[this.row-1][this.column] == 'B' || myChessBoard[this.row-1][this.column] == 'BK' )) {
-          if(markAttackBoard) {
-            markAttackBoard[this.row-1][this.column-1] = 'R';
-          }
-          else {
-            markBoard[this.row-1][this.column-1] = 'R';
-          }
+          markBoard[this.row-1][this.column-1] = 'R';
           possibleMoveFound = true;
         }
         else if(this.isBlack && (myChessBoard[this.row-1][this.column] == 'W' || myChessBoard[this.row-1][this.column] == 'WK')) {
-          if(markAttackBoard) {
-            markAttackBoard[this.row-1][this.column] = 'R';
-          }
-          else {
-            markBoard[this.row-1][this.column] = 'R';
-          }
+          markBoard[this.row-1][this.column] = 'R';
           possibleMoveFound = true;
         }
         else {

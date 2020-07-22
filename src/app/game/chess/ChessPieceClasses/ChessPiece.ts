@@ -24,7 +24,7 @@ export abstract class ChessPiece {
                         ,['','','','','','','','']];
   }
 
-  abstract calculatePossibleMovements(myChessBoard: string[][], markMoveBoard: string[][], markAttackBoard: string[][], possibleEnemyMovementsBoard: string[][]): void;
+  abstract calculatePossibleMovements(myChessBoard: string[][], markMoveBoard: string[][], possibleEnemyMovementsBoard: string[][]): void;
 
   markPossibleMoveBoard(): void {
     for(let i = 0; i < 8; i++) {

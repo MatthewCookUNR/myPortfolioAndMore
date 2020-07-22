@@ -8,17 +8,17 @@ export class Bishop extends ChessPiece {
   }
 
   //Calculates possible movements and marks possibleMove 2D array
-  calculatePossibleMovements(myChessBoard: string[][], markBoard: string[][], markAttackBoard: string[][]): void {
+  calculatePossibleMovements(myChessBoard: string[][], markBoard: string[][]): void {
 
     //Supporting functions used to modularize method
-    this.calculatePossibleDownRightDiagMovements(myChessBoard, markBoard, markAttackBoard);
-    this.calculatePossibleDownLeftDiagMovements(myChessBoard, markBoard, markAttackBoard);
-    this.calculatePossibleUpLeftDiagMovements(myChessBoard, markBoard, markAttackBoard);
-    this.calculatePossibleUpRightDiagMovements(myChessBoard, markBoard, markAttackBoard);
+    this.calculatePossibleDownRightDiagMovements(myChessBoard, markBoard);
+    this.calculatePossibleDownLeftDiagMovements(myChessBoard, markBoard);
+    this.calculatePossibleUpLeftDiagMovements(myChessBoard, markBoard);
+    this.calculatePossibleUpRightDiagMovements(myChessBoard, markBoard);
   }
 
   //Calculate all possible movements in down right diagonal direction
-  calculatePossibleDownRightDiagMovements(myChessBoard: string[][], markBoard: string[][], markAttackBoard: string[][] ): void {
+  calculatePossibleDownRightDiagMovements(myChessBoard: string[][], markBoard: string[][] ): void {
     let enemyFound: boolean = false;
     let sameColorFound: boolean = false;
     let tempRow: number = this.row;
@@ -32,24 +32,15 @@ export class Bishop extends ChessPiece {
           tempCol++;
         }
         else if(!this.isBlack && (myChessBoard[tempRow+1][tempCol+1] == 'B' ||myChessBoard[tempRow+1][tempCol+1] == 'BK')) {
-          if(markAttackBoard) {
-            markAttackBoard[tempRow+1][tempCol+1] = 'R';
-          }
-          else {
-            markBoard[tempRow+1][tempCol+1] = 'R';
-          }
+          markBoard[tempRow+1][tempCol+1] = 'R';
           enemyFound = true;
         }
         else if(this.isBlack && (myChessBoard[tempRow+1][tempCol+1] == 'W' ||myChessBoard[tempRow+1][tempCol+1] == 'WK')) {
-          if(markAttackBoard) {
-            markAttackBoard[tempRow+1][tempCol+1] = 'R';
-          }
-          else {
-            markBoard[tempRow+1][tempCol+1] = 'R';
-          }
+          markBoard[tempRow+1][tempCol+1] = 'R';
           enemyFound = true;
         }
         else {
+          markBoard[tempRow+1][tempCol+1] = 'T';
           sameColorFound = true;
         }
       }
@@ -60,7 +51,7 @@ export class Bishop extends ChessPiece {
   }
 
   //Calculate all possible movements in down left diagonal direction
-  calculatePossibleDownLeftDiagMovements(myChessBoard: string[][], markBoard: string[][], markAttackBoard: string[][] ): void {
+  calculatePossibleDownLeftDiagMovements(myChessBoard: string[][], markBoard: string[][] ): void {
     let enemyFound: boolean = false;
     let sameColorFound: boolean = false;
     let tempRow: number = this.row;
@@ -74,24 +65,15 @@ export class Bishop extends ChessPiece {
           tempCol--;
         }
         else if(!this.isBlack && (myChessBoard[tempRow+1][tempCol-1] == 'B' ||myChessBoard[tempRow+1][tempCol-1] == 'BK')) {
-          if(markAttackBoard) {
-            markAttackBoard[tempRow+1][tempCol-1] = 'R';
-          }
-          else {
-            markBoard[tempRow+1][tempCol-1] = 'R';
-          }
+          markBoard[tempRow+1][tempCol-1] = 'R';
           enemyFound = true;
         }
         else if(this.isBlack && (myChessBoard[tempRow+1][tempCol-1] == 'W' ||myChessBoard[tempRow+1][tempCol-1] == 'WK')) {
-          if(markAttackBoard) {
-            markAttackBoard[tempRow+1][tempCol-1] = 'R';
-          }
-          else {
-            markBoard[tempRow+1][tempCol-1] = 'R';
-          }
+          markBoard[tempRow+1][tempCol-1] = 'R';
           enemyFound = true;
         }
         else {
+          markBoard[tempRow+1][tempCol-1] = 'T';
           sameColorFound = true;
         }
       }
@@ -102,7 +84,7 @@ export class Bishop extends ChessPiece {
   }
 
   //Calculate all possible movements in up right diagonal direction
-  calculatePossibleUpRightDiagMovements(myChessBoard: string[][], markBoard: string[][], markAttackBoard: string[][] ): void {
+  calculatePossibleUpRightDiagMovements(myChessBoard: string[][], markBoard: string[][] ): void {
     let enemyFound: boolean = false;
     let sameColorFound: boolean = false;
     let tempRow: number = this.row;
@@ -116,24 +98,15 @@ export class Bishop extends ChessPiece {
           tempCol++;
         }
         else if(!this.isBlack && (myChessBoard[tempRow-1][tempCol+1] == 'B' ||myChessBoard[tempRow-1][tempCol+1] == 'BK')) {
-          if(markAttackBoard) {
-            markAttackBoard[tempRow-1][tempCol+1] = 'R';
-          }
-          else {
-            markBoard[tempRow-1][tempCol+1] = 'R';
-          }
+          markBoard[tempRow-1][tempCol+1] = 'R';
           enemyFound = true;
         }
         else if(this.isBlack && (myChessBoard[tempRow-1][tempCol+1] == 'W' ||myChessBoard[tempRow-1][tempCol+1] == 'WK')) {
-          if(markAttackBoard) {
-            markAttackBoard[tempRow-1][tempCol+1] = 'R';
-          }
-          else {
-            markBoard[tempRow-1][tempCol+1] = 'R';
-          }
+          markBoard[tempRow-1][tempCol+1] = 'R';
           enemyFound = true;
         }
         else {
+          markBoard[tempRow-1][tempCol+1] = 'T';
           sameColorFound = true;
         }
       }
@@ -144,7 +117,7 @@ export class Bishop extends ChessPiece {
   }
 
   //Calculate all possible movements in up left diagonal direction
-  calculatePossibleUpLeftDiagMovements(myChessBoard: string[][], markBoard: string[][], markAttackBoard: string[][]): void {
+  calculatePossibleUpLeftDiagMovements(myChessBoard: string[][], markBoard: string[][]): void {
     let enemyFound: boolean = false;
     let sameColorFound: boolean = false;
     let tempRow: number = this.row;
@@ -158,24 +131,15 @@ export class Bishop extends ChessPiece {
           tempCol--;
         }
         else if(!this.isBlack && (myChessBoard[tempRow-1][tempCol-1] == 'B' ||myChessBoard[tempRow-1][tempCol-1] == 'BK')) {
-          if(markAttackBoard) {
-            markAttackBoard[tempRow-1][tempCol-1] = 'R';
-          }
-          else {
-            markBoard[tempRow-1][tempCol-1] = 'R';
-          }
+          markBoard[tempRow-1][tempCol-1] = 'R';
           enemyFound = true;
         }
         else if(this.isBlack && (myChessBoard[tempRow-1][tempCol-1] == 'W' ||myChessBoard[tempRow-1][tempCol-1] == 'WK')) {
-          if(markAttackBoard) {
-            markAttackBoard[tempRow-1][tempCol-1] = 'R';
-          }
-          else {
-            markBoard[tempRow-1][tempCol-1] = 'R';
-          }
+          markBoard[tempRow-1][tempCol-1] = 'R';
           enemyFound = true;
         }
         else {
+          markBoard[tempRow-1][tempCol-1] = 'T';
           sameColorFound = true;
         }
       }

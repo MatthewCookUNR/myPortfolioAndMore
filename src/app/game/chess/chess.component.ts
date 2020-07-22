@@ -17,8 +17,6 @@ export class ChessComponent implements OnInit {
   myChessBoard: string[][];
   possibleWhiteMovementsBoard: string[][];
   possibleBlackMovementsBoard: string[][];
-  possibleWhiteAttacksBoard: string[][];
-  possibleBlackAttacksBoard: string[][];
   myChessPieces: ChessPiece[];
   clickedPieceIndex: number;
   clickedPieceId: string;
@@ -61,14 +59,14 @@ export class ChessComponent implements OnInit {
         this.clickedPieceId = squareId;
         if(this.myChessPieces[pieceIndex].type == 'King') {
           if(this.currentPlayerColorStr == 'W') {
-            this.myChessPieces[pieceIndex].calculatePossibleMovements(this.myChessBoard, this.myChessPieces[pieceIndex].possibleMoveBoard, null, this.possibleBlackMovementsBoard);
+            this.myChessPieces[pieceIndex].calculatePossibleMovements(this.myChessBoard, this.myChessPieces[pieceIndex].possibleMoveBoard, this.possibleBlackMovementsBoard);
           }
           else {
-            this.myChessPieces[pieceIndex].calculatePossibleMovements(this.myChessBoard, this.myChessPieces[pieceIndex].possibleMoveBoard, null, this.possibleWhiteMovementsBoard);
+            this.myChessPieces[pieceIndex].calculatePossibleMovements(this.myChessBoard, this.myChessPieces[pieceIndex].possibleMoveBoard, this.possibleWhiteMovementsBoard);
           }
         }
         else {
-          this.myChessPieces[pieceIndex].calculatePossibleMovements(this.myChessBoard, this.myChessPieces[pieceIndex].possibleMoveBoard, null, null);
+          this.myChessPieces[pieceIndex].calculatePossibleMovements(this.myChessBoard, this.myChessPieces[pieceIndex].possibleMoveBoard, null);
         }
         this.myChessPieces[pieceIndex].markPossibleMoveBoard();
       }
@@ -134,24 +132,6 @@ export class ChessComponent implements OnInit {
                           ,['','','','','','','','']
                           ,['','','','','','','','']]; 
     this.possibleWhiteMovementsBoard =
-                          [['','','','','','','','']
-                          ,['','','','','','','','']
-                          ,['','','','','','','','']
-                          ,['','','','','','','','']
-                          ,['','','','','','','','']
-                          ,['','','','','','','','']
-                          ,['','','','','','','','']
-                          ,['','','','','','','','']];
-    this.possibleWhiteAttacksBoard  =
-                          [['','','','','','','','']
-                          ,['','','','','','','','']
-                          ,['','','','','','','','']
-                          ,['','','','','','','','']
-                          ,['','','','','','','','']
-                          ,['','','','','','','','']
-                          ,['','','','','','','','']
-                          ,['','','','','','','','']];
-    this.possibleBlackAttacksBoard =
                           [['','','','','','','','']
                           ,['','','','','','','','']
                           ,['','','','','','','','']
@@ -332,24 +312,6 @@ export class ChessComponent implements OnInit {
                           ,['','','','','','','','']
                           ,['','','','','','','','']
                           ,['','','','','','','','']];
-    this.possibleWhiteAttacksBoard  =
-                          [['','','','','','','','']
-                          ,['','','','','','','','']
-                          ,['','','','','','','','']
-                          ,['','','','','','','','']
-                          ,['','','','','','','','']
-                          ,['','','','','','','','']
-                          ,['','','','','','','','']
-                          ,['','','','','','','','']];
-    this.possibleBlackAttacksBoard =
-                          [['','','','','','','','']
-                          ,['','','','','','','','']
-                          ,['','','','','','','','']
-                          ,['','','','','','','','']
-                          ,['','','','','','','','']
-                          ,['','','','','','','','']
-                          ,['','','','','','','','']
-                          ,['','','','','','','','']];
   }
 
   //Functon needs to be updated to handle pieces that have been destroy
@@ -359,19 +321,19 @@ export class ChessComponent implements OnInit {
     //All Pieces minus Kings
     for(let i = 0; i < this.myChessPieces.length-2; i++) {
       if(this.myChessPieces[i].isBlack && this.myChessPieces[i].row != -1) {
-        this.myChessPieces[i].calculatePossibleMovements(this.myChessBoard, this.possibleBlackMovementsBoard, this.possibleBlackAttacksBoard, null);
+        this.myChessPieces[i].calculatePossibleMovements(this.myChessBoard, this.possibleBlackMovementsBoard, null);
       }
       else if(this.myChessPieces[i].row != -1) {
-        this.myChessPieces[i].calculatePossibleMovements(this.myChessBoard, this.possibleWhiteMovementsBoard, this.possibleWhiteAttacksBoard, null);
+        this.myChessPieces[i].calculatePossibleMovements(this.myChessBoard, this.possibleWhiteMovementsBoard, null);
       }
     }
 
     this.areKingsInCheck();
 
     //White King
-    this.myChessPieces[this.myChessPieces.length-2].calculatePossibleMovements(this.myChessBoard, this.possibleWhiteMovementsBoard, this.possibleWhiteAttacksBoard, this.possibleBlackMovementsBoard);
+    this.myChessPieces[this.myChessPieces.length-2].calculatePossibleMovements(this.myChessBoard, this.possibleWhiteMovementsBoard, this.possibleBlackMovementsBoard);
     //Black King
-    this.myChessPieces[this.myChessPieces.length-1].calculatePossibleMovements(this.myChessBoard, this.possibleBlackMovementsBoard, this.possibleBlackAttacksBoard, this.possibleWhiteMovementsBoard);
+    this.myChessPieces[this.myChessPieces.length-1].calculatePossibleMovements(this.myChessBoard, this.possibleBlackMovementsBoard, this.possibleWhiteMovementsBoard);
 
     console.log("White Moves\n")
     console.log(this.possibleWhiteMovementsBoard);
@@ -383,7 +345,7 @@ export class ChessComponent implements OnInit {
   }
 
   areKingsInCheck(): void {
-    if(this.possibleBlackAttacksBoard[this.myChessPieces[this.myChessPieces.length-2].row][this.myChessPieces[this.myChessPieces.length-2].column] == 'R') {
+    if(this.possibleBlackMovementsBoard[this.myChessPieces[this.myChessPieces.length-2].row][this.myChessPieces[this.myChessPieces.length-2].column] == 'R') {
       this.whiteKingCheck = true;
       (this.myChessPieces[this.myChessPieces.length-2] as King).isInCheck = true;
     }
@@ -393,7 +355,7 @@ export class ChessComponent implements OnInit {
 
     }
     
-    if(this.possibleWhiteAttacksBoard[this.myChessPieces[this.myChessPieces.length-1].row][this.myChessPieces[this.myChessPieces.length-1].column] == 'R') {
+    if(this.possibleWhiteMovementsBoard[this.myChessPieces[this.myChessPieces.length-1].row][this.myChessPieces[this.myChessPieces.length-1].column] == 'R') {
       this.blackKingCheck = true;
       (this.myChessPieces[this.myChessPieces.length-1] as King).isInCheck = true;
     }

@@ -8,17 +8,17 @@ export class Queen extends ChessPiece {
   }
 
   //Calculates possible movements and marks possibleMove 2D array
-  calculatePossibleMovements(myChessBoard: string[][], markBoard: string[][], markAttackBoard: string[][] ): void {
+  calculatePossibleMovements(myChessBoard: string[][], markBoard: string[][] ): void {
 
     //Supporting functions used to modularize method
-    this.calculatePossibleDownVertMovements(myChessBoard, markBoard, markAttackBoard);
-    this.calculatePossibleUpVertMovements(myChessBoard, markBoard, markAttackBoard);
-    this.calculatePossibleRightHorizMovements(myChessBoard, markBoard, markAttackBoard);
-    this.calculatePossibleLeftHorizMovements(myChessBoard, markBoard, markAttackBoard);
-    this.calculatePossibleDownRightDiagMovements(myChessBoard, markBoard, markAttackBoard);
-    this.calculatePossibleDownLeftDiagMovements(myChessBoard, markBoard, markAttackBoard);
-    this.calculatePossibleUpLeftDiagMovements(myChessBoard, markBoard, markAttackBoard);
-    this.calculatePossibleUpRightDiagMovements(myChessBoard, markBoard, markAttackBoard);
+    this.calculatePossibleDownVertMovements(myChessBoard, markBoard);
+    this.calculatePossibleUpVertMovements(myChessBoard, markBoard);
+    this.calculatePossibleRightHorizMovements(myChessBoard, markBoard);
+    this.calculatePossibleLeftHorizMovements(myChessBoard, markBoard);
+    this.calculatePossibleDownRightDiagMovements(myChessBoard, markBoard);
+    this.calculatePossibleDownLeftDiagMovements(myChessBoard, markBoard);
+    this.calculatePossibleUpLeftDiagMovements(myChessBoard, markBoard);
+    this.calculatePossibleUpRightDiagMovements(myChessBoard, markBoard);
   }
 
   /*
@@ -28,8 +28,7 @@ export class Queen extends ChessPiece {
   * 
   */
   //Calculate all possible movements in down vertical direction
-  //Calculate all possible movements in down vertical direction
-  calculatePossibleDownVertMovements(myChessBoard: string[][], markBoard: string[][], markAttackBoard: string[][]): void {
+  calculatePossibleDownVertMovements(myChessBoard: string[][], markBoard: string[][]): void {
     let enemyFound: boolean = false;
     let sameColorFound: boolean = false;
     let tempRow: number = this.row;
@@ -44,24 +43,15 @@ export class Queen extends ChessPiece {
           tempRow++;
         }
         else if(!this.isBlack && (myChessBoard[tempRow+1][this.column] == 'B' || myChessBoard[tempRow+1][this.column] == 'BK')) {
-          if(markAttackBoard) {
-            markAttackBoard[tempRow+1][this.column] = 'R';
-          }
-          else {
-            markBoard[tempRow+1][this.column] = 'R';
-          }
+          markBoard[tempRow+1][this.column] = 'R';
           enemyFound = true
         }
         else if(this.isBlack && (myChessBoard[tempRow+1][this.column] == 'W' || myChessBoard[tempRow+1][this.column] == 'WK'))  {
-          if(markAttackBoard) {
-            markAttackBoard[tempRow+1][this.column] = 'R';
-          }
-          else {
-            markBoard[tempRow+1][this.column] = 'R';
-          }
+          markBoard[tempRow+1][this.column] = 'R';
           enemyFound = true
         }
         else {
+          markBoard[tempRow+1][this.column] = 'T';
           sameColorFound = true;
         }
       }
@@ -72,7 +62,7 @@ export class Queen extends ChessPiece {
   }
 
   //Calculate all possible movements in up vertical direction
-  calculatePossibleUpVertMovements(myChessBoard: string[][], markBoard: string[][], markAttackBoard: string[][]): void {
+  calculatePossibleUpVertMovements(myChessBoard: string[][], markBoard: string[][]): void {
     let enemyFound: boolean = false;
     let sameColorFound: boolean = false;
     let tempRow: number = this.row;
@@ -87,24 +77,15 @@ export class Queen extends ChessPiece {
           tempRow--;
         }
         else if(!this.isBlack && (myChessBoard[tempRow-1][this.column] == 'B' || myChessBoard[tempRow-1][this.column] == 'BK')) {
-          if(markAttackBoard) {
-            markAttackBoard[tempRow-1][this.column] = 'R';
-          }
-          else {
-            markBoard[tempRow-1][this.column] = 'R';
-          }
+          markBoard[tempRow-1][this.column] = 'R';
           enemyFound = true
         }
         else if(this.isBlack && (myChessBoard[tempRow-1][this.column] == 'W' || myChessBoard[tempRow-1][this.column] == 'WK'))  {
-          if(markAttackBoard) {
-            markAttackBoard[tempRow-1][this.column] = 'R';
-          }
-          else {
-            markBoard[tempRow-1][this.column] = 'R';
-          }
+          markBoard[tempRow-1][this.column] = 'R';
           enemyFound = true
         }
         else {
+          markBoard[tempRow-1][this.column] = 'T';
           sameColorFound = true;
         }
       }
@@ -115,7 +96,7 @@ export class Queen extends ChessPiece {
   }
 
   //Calculate all possible movements in right horizontal direction
-  calculatePossibleRightHorizMovements(myChessBoard: string[][], markBoard: string[][], markAttackBoard: string[][]): void {
+  calculatePossibleRightHorizMovements(myChessBoard: string[][], markBoard: string[][]): void {
     let enemyFound: boolean = false;
     let sameColorFound: boolean = false;
     let tempCol: number = this.column;
@@ -130,24 +111,15 @@ export class Queen extends ChessPiece {
           tempCol++;
         }
         else if(!this.isBlack && (myChessBoard[this.row][tempCol+1] == 'B' || myChessBoard[this.row][tempCol+1] == 'BK')) {
-          if(markAttackBoard) {
-            markAttackBoard[this.row][tempCol+1] = 'R';
-          }
-          else {
-            markBoard[this.row][tempCol+1] = 'R';
-          }
+          markBoard[this.row][tempCol+1] = 'R';
           enemyFound = true
         }
         else if(this.isBlack && (myChessBoard[this.row][tempCol+1] == 'W' || myChessBoard[this.row][tempCol+1] == 'WK'))  {
-          if(markAttackBoard) {
-            markAttackBoard[this.row][tempCol+1] = 'R';
-          }
-          else {
-            markBoard[this.row][tempCol+1] = 'R';
-          }
+          markBoard[this.row][tempCol+1] = 'R';
           enemyFound = true
         }
         else {
+          markBoard[this.row][tempCol+1] = 'T';
           sameColorFound = true;
         }
       }
@@ -158,7 +130,7 @@ export class Queen extends ChessPiece {
   }
 
   //Calculate all possible movements in left horizontal direction
-  calculatePossibleLeftHorizMovements(myChessBoard: string[][], markBoard: string[][], markAttackBoard: string[][]): void {
+  calculatePossibleLeftHorizMovements(myChessBoard: string[][], markBoard: string[][]): void {
     let enemyFound: boolean = false;
     let sameColorFound: boolean = false;
     let tempCol: number = this.column;
@@ -173,24 +145,15 @@ export class Queen extends ChessPiece {
           tempCol--;
         }
         else if(!this.isBlack && (myChessBoard[this.row][tempCol-1] == 'B' || myChessBoard[this.row][tempCol-1] == 'BK')) {
-          if(markAttackBoard) {
-            markAttackBoard[this.row][tempCol-1] = 'R'
-          }
-          else {
-            markBoard[this.row][tempCol-1] = 'R'
-          }
+          markBoard[this.row][tempCol-1] = 'R'
           enemyFound = true
         }
         else if(this.isBlack && (myChessBoard[this.row][tempCol-1] == 'W' || myChessBoard[this.row][tempCol-1] == 'WK'))  {
-          if(markAttackBoard) {
-            markAttackBoard[this.row][tempCol-1] = 'R'
-          }
-          else {
-            markBoard[this.row][tempCol-1] = 'R'
-          }
+          markBoard[this.row][tempCol-1] = 'R'
           enemyFound = true
         }
         else {
+          markBoard[this.row][tempCol-1] = 'T';      
           sameColorFound = true;
         }
       }
@@ -207,7 +170,7 @@ export class Queen extends ChessPiece {
   * 
   */
   //Calculate all possible movements in down right diagonal direction
-  calculatePossibleDownRightDiagMovements(myChessBoard: string[][], markBoard: string[][], markAttackBoard: string[][] ): void {
+  calculatePossibleDownRightDiagMovements(myChessBoard: string[][], markBoard: string[][] ): void {
     let enemyFound: boolean = false;
     let sameColorFound: boolean = false;
     let tempRow: number = this.row;
@@ -221,24 +184,15 @@ export class Queen extends ChessPiece {
           tempCol++;
         }
         else if(!this.isBlack && (myChessBoard[tempRow+1][tempCol+1] == 'B' ||myChessBoard[tempRow+1][tempCol+1] == 'BK')) {
-          if(markAttackBoard) {
-            markAttackBoard[tempRow+1][tempCol+1] = 'R';
-          }
-          else {
-            markBoard[tempRow+1][tempCol+1] = 'R';
-          }
+          markBoard[tempRow+1][tempCol+1] = 'R';
           enemyFound = true;
         }
         else if(this.isBlack && (myChessBoard[tempRow+1][tempCol+1] == 'W' ||myChessBoard[tempRow+1][tempCol+1] == 'WK')) {
-          if(markAttackBoard) {
-            markAttackBoard[tempRow+1][tempCol+1] = 'R';
-          }
-          else {
-            markBoard[tempRow+1][tempCol+1] = 'R';
-          }
+          markBoard[tempRow+1][tempCol+1] = 'R';
           enemyFound = true;
         }
         else {
+          markBoard[tempRow+1][tempCol+1] = 'T';
           sameColorFound = true;
         }
       }
@@ -249,7 +203,7 @@ export class Queen extends ChessPiece {
   }
 
   //Calculate all possible movements in down left diagonal direction
-  calculatePossibleDownLeftDiagMovements(myChessBoard: string[][], markBoard: string[][], markAttackBoard: string[][] ): void {
+  calculatePossibleDownLeftDiagMovements(myChessBoard: string[][], markBoard: string[][] ): void {
     let enemyFound: boolean = false;
     let sameColorFound: boolean = false;
     let tempRow: number = this.row;
@@ -263,24 +217,15 @@ export class Queen extends ChessPiece {
           tempCol--;
         }
         else if(!this.isBlack && (myChessBoard[tempRow+1][tempCol-1] == 'B' ||myChessBoard[tempRow+1][tempCol-1] == 'BK')) {
-          if(markAttackBoard) {
-            markAttackBoard[tempRow+1][tempCol-1] = 'R';
-          }
-          else {
-            markBoard[tempRow+1][tempCol-1] = 'R';
-          }
+          markBoard[tempRow+1][tempCol-1] = 'R';
           enemyFound = true;
         }
         else if(this.isBlack && (myChessBoard[tempRow+1][tempCol-1] == 'W' ||myChessBoard[tempRow+1][tempCol-1] == 'WK')) {
-          if(markAttackBoard) {
-            markAttackBoard[tempRow+1][tempCol-1] = 'R';
-          }
-          else {
-            markBoard[tempRow+1][tempCol-1] = 'R';
-          }
+          markBoard[tempRow+1][tempCol-1] = 'R';
           enemyFound = true;
         }
         else {
+          markBoard[tempRow+1][tempCol-1] = 'T';
           sameColorFound = true;
         }
       }
@@ -291,7 +236,7 @@ export class Queen extends ChessPiece {
   }
 
   //Calculate all possible movements in up right diagonal direction
-  calculatePossibleUpRightDiagMovements(myChessBoard: string[][], markBoard: string[][], markAttackBoard: string[][] ): void {
+  calculatePossibleUpRightDiagMovements(myChessBoard: string[][], markBoard: string[][] ): void {
     let enemyFound: boolean = false;
     let sameColorFound: boolean = false;
     let tempRow: number = this.row;
@@ -305,24 +250,15 @@ export class Queen extends ChessPiece {
           tempCol++;
         }
         else if(!this.isBlack && (myChessBoard[tempRow-1][tempCol+1] == 'B' ||myChessBoard[tempRow-1][tempCol+1] == 'BK')) {
-          if(markAttackBoard) {
-            markAttackBoard[tempRow-1][tempCol+1] = 'R';
-          }
-          else {
-            markBoard[tempRow-1][tempCol+1] = 'R';
-          }
+          markBoard[tempRow-1][tempCol+1] = 'R';
           enemyFound = true;
         }
         else if(this.isBlack && (myChessBoard[tempRow-1][tempCol+1] == 'W' ||myChessBoard[tempRow-1][tempCol+1] == 'WK')) {
-          if(markAttackBoard) {
-            markAttackBoard[tempRow-1][tempCol+1] = 'R';
-          }
-          else {
-            markBoard[tempRow-1][tempCol+1] = 'R';
-          }
+          markBoard[tempRow-1][tempCol+1] = 'R';
           enemyFound = true;
         }
         else {
+          markBoard[tempRow-1][tempCol+1] = 'T';
           sameColorFound = true;
         }
       }
@@ -333,7 +269,7 @@ export class Queen extends ChessPiece {
   }
 
   //Calculate all possible movements in up left diagonal direction
-  calculatePossibleUpLeftDiagMovements(myChessBoard: string[][], markBoard: string[][], markAttackBoard: string[][]): void {
+  calculatePossibleUpLeftDiagMovements(myChessBoard: string[][], markBoard: string[][]): void {
     let enemyFound: boolean = false;
     let sameColorFound: boolean = false;
     let tempRow: number = this.row;
@@ -347,24 +283,15 @@ export class Queen extends ChessPiece {
           tempCol--;
         }
         else if(!this.isBlack && (myChessBoard[tempRow-1][tempCol-1] == 'B' ||myChessBoard[tempRow-1][tempCol-1] == 'BK')) {
-          if(markAttackBoard) {
-            markAttackBoard[tempRow-1][tempCol-1] = 'R';
-          }
-          else {
-            markBoard[tempRow-1][tempCol-1] = 'R';
-          }
+          markBoard[tempRow-1][tempCol-1] = 'R';
           enemyFound = true;
         }
         else if(this.isBlack && (myChessBoard[tempRow-1][tempCol-1] == 'W' ||myChessBoard[tempRow-1][tempCol-1] == 'WK')) {
-          if(markAttackBoard) {
-            markAttackBoard[tempRow-1][tempCol-1] = 'R';
-          }
-          else {
-            markBoard[tempRow-1][tempCol-1] = 'R';
-          }
+          markBoard[tempRow-1][tempCol-1] = 'R';
           enemyFound = true;
         }
         else {
+          markBoard[tempRow-1][tempCol-1] = 'T';
           sameColorFound = true;
         }
       }
