@@ -67,6 +67,9 @@ export class ChessComponent implements OnInit {
         }
         else {
           this.myChessPieces[pieceIndex].calculatePossibleMovements(this.myChessBoard, this.myChessPieces[pieceIndex].possibleMoveBoard, null);
+          if(this.myChessPieces[pieceIndex].type == "Pawn") {
+            (this.myChessPieces[pieceIndex] as Pawn).calculatePossibleAttacks(this.myChessBoard, this.myChessPieces[pieceIndex].possibleMoveBoard);
+          }
         }
         this.myChessPieces[pieceIndex].markPossibleMoveBoard();
       }
@@ -321,10 +324,20 @@ export class ChessComponent implements OnInit {
     //All Pieces minus Kings
     for(let i = 0; i < this.myChessPieces.length-2; i++) {
       if(this.myChessPieces[i].isBlack && this.myChessPieces[i].row != -1) {
-        this.myChessPieces[i].calculatePossibleMovements(this.myChessBoard, this.possibleBlackMovementsBoard, null);
+        if(this.myChessPieces[i].type == "Pawn") {
+          (this.myChessPieces[i] as Pawn).calculatePossibleAttacks(this.myChessBoard, this.possibleBlackMovementsBoard);
+        }
+        else {
+          this.myChessPieces[i].calculatePossibleMovements(this.myChessBoard, this.possibleBlackMovementsBoard, null);
+        }
       }
       else if(this.myChessPieces[i].row != -1) {
-        this.myChessPieces[i].calculatePossibleMovements(this.myChessBoard, this.possibleWhiteMovementsBoard, null);
+        if(this.myChessPieces[i].type == "Pawn") {
+          (this.myChessPieces[i] as Pawn).calculatePossibleAttacks(this.myChessBoard, this.possibleWhiteMovementsBoard);
+        }
+        else {
+          this.myChessPieces[i].calculatePossibleMovements(this.myChessBoard, this.possibleWhiteMovementsBoard, null);
+        }
       }
     }
 
