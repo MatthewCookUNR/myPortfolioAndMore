@@ -191,7 +191,9 @@ export class ChessComponent implements OnInit {
     let blackSquareObj = document.getElementsByClassName("blackSquare") as HTMLCollectionOf<HTMLElement>;;
     for(let i = 0; i < whiteSquareObj.length; i++) {
       whiteSquareObj[i].style.backgroundColor = "#F8F8FF";
+      whiteSquareObj[i].style.borderStyle = 'none';
       blackSquareObj[i].style.backgroundColor = "#808080";
+      blackSquareObj[i].style.borderStyle = 'none';
     }
 
   }

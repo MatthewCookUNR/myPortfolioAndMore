@@ -34,12 +34,14 @@ export abstract class ChessPiece {
           let squareId: string = "sqrRow" + (i+1) + "Col" + (j+1);
           let squareObj = document.getElementById(squareId);
           squareObj.style.backgroundColor= "#8fefd7";
+          squareObj.style.borderStyle = 'solid';
         }
         //Enemy space
         else if(this.possibleMoveBoard[i][j] == "R") {
           let squareId: string = "sqrRow" + (i+1) + "Col" + (j+1);
           let squareObj = document.getElementById(squareId);
           squareObj.style.backgroundColor= "#8B0000";
+          squareObj.style.borderStyle = 'solid';
         }
       }
     }

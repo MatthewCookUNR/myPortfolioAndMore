@@ -1,16 +1,29 @@
+#mainContent {
+  width: 70%;
+  height: 2000px;
+  margin: auto;
+}
+
+.flexContainer {
+  display: flex;
+  margin: center;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
 
 #chessBoard {
+  margin: auto;
   width: 50%;
 }
 
 table {
   text-align: center;
-  width: 600px;
-  height: 600px;
+  width: 40em;
+  height: 40em;
   border: 10px;
   border-style: solid;
   border-color: #B22222;
-  margin: auto;
 }
 
 .chessPiece {
@@ -40,22 +53,22 @@ header {
   background-color: #808080;
 }
 
-#mainContent {
-  width: 100%;
-  height: auto;
-  display: flex;
-}
-
 .sidebar {
   background-color: #FFB6C1;
   width: 25%;
-  height: 600px;
+  height: 40em;
 }
 
 .sidebarContent {
-  margin-left: 20px;
+  padding-right: 2em;
+  text-align: center;
 }
 
 .sidebar ul li {
   list-style: none;
+}
+
+.headFootbar {
+  background-color: #FFB6C1;
+  height: 15em;
 }

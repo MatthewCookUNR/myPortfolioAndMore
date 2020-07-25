@@ -3,16 +3,23 @@
     <h2 id="gameStatus">Current Player: <span id="currentPlayer"></span></h2>
   </header>
   <div id="mainContent">
-    <div id="leftSidebar" class="sidebar">
-      <div class="sidebarContent">
-        <h2>White Player</h2>
-        <ul>
-          <li>King Status: <span id="whiteKingStatus">Safe</span></li>
-        </ul>
-      </div>
+    <!--Header Bar Container-->
+    <div id="headbar" class = "headFootbar">
+
     </div>
-    <div id="chessBoard">
-      <table>
+    <!--Chessboard Container-->
+    <div class="flexContainer">
+      <!--Left SideBar Container-->
+      <div id="leftSidebar" class="sidebar">
+        <div class="sidebarContent">
+          <h2>White Player</h2>
+          <ul>
+            <li>King Status: <span id="whiteKingStatus">Safe</span></li>
+          </ul>
+        </div>
+      </div>
+      <!-- Chessboard -->
+      <table id="chessBoard">
         <tbody>
           <tr>
             <td class="whiteSquare" (click)="handleSqrClick($event)" id="sqrRow1Col1"><span class="chessPiece">♖</span></td>
@@ -96,14 +103,18 @@
           </tr>
         </tbody>
       </table>
-    </div>
-    <div id="rightSidebar" class="sidebar">
-      <div class="sidebarContent">
-        <h2>Black Player</h2>
-        <ul>
-          <li>King Status: <span id="blackKingStatus">Safe</span></li>
-        </ul>
+      <!--Right Sidebar Container-->
+      <div id="rightSidebar" class="sidebar">
+        <div class="sidebarContent">
+          <h2>Black Player</h2>
+          <ul>
+            <li>King Status: <span id="blackKingStatus">Safe</span></li>
+          </ul>
+        </div>
       </div>
+    </div>
+    <div id = "footbar" class = "headFootbar">
+
     </div>
   </div>
 </body>
