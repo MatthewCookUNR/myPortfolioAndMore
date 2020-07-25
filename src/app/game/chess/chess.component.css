@@ -1,7 +1,56 @@
-#mainContent {
-  width: 70%;
-  height: 2000px;
-  margin: auto;
+
+/*Sizes for base screen size (DESKTOP)*/
+@media only screen and (min-width: 1300px) {
+  #mainContent {
+    width: 1200px;
+    height: 2000px;
+    margin: auto;
+  }
+
+  table {
+    height: 40em;
+  }
+
+  .sidebar {
+    height: 40em;
+  }
+
+  .headFootbar {
+    height: 15em;
+  }
+
+  #chessBoard {
+    width: 50%;
+  }
+}
+
+/*Sizes for small screen size (DESKTOP)*/
+@media only screen and (max-width: 1300px) {
+  #mainContent {
+    width: 900px;
+    height: 700px;
+    margin: auto;
+  }
+
+  body {
+    height: 1250px;
+  }
+
+  table {
+    height: 35em;
+  }
+
+  .sidebar {
+    height: 35em;
+  }
+
+  .headFootbar {
+    height: 10em;
+  }
+
+  #chessBoard {
+    width: 70%;
+  }
 }
 
 .flexContainer {
@@ -9,18 +58,10 @@
   margin: center;
   align-items: center;
   justify-content: center;
-  width: 100%;
-}
-
-#chessBoard {
-  margin: auto;
-  width: 50%;
 }
 
 table {
   text-align: center;
-  width: 40em;
-  height: 40em;
   border: 10px;
   border-style: solid;
   border-color: #B22222;
@@ -56,7 +97,6 @@ header {
 .sidebar {
   background-color: #FFB6C1;
   width: 25%;
-  height: 40em;
 }
 
 .sidebarContent {
@@ -70,5 +110,4 @@ header {
 
 .headFootbar {
   background-color: #FFB6C1;
-  height: 15em;
 }
