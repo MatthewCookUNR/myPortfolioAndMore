@@ -1,58 +1,126 @@
 
 /*Sizes for base screen size (DESKTOP)*/
 @media only screen and (min-width: 1300px) {
+
   #mainContent {
     width: 1200px;
-    height: 2000px;
     margin: auto;
   }
 
-  table {
-    height: 40em;
+  .flexContainer {
+    height: 38em;
+  }
+  
+  table, .sidebar {
+    height: 100%;
   }
 
-  .sidebar {
-    height: 40em;
+  .chessPiece {
+    font-size: 52px;
+    line-height: 40px;
+  }
+
+  .blackSquare, .whiteSquare {
+    border-width: 3px;
   }
 
   .headFootbar {
-    height: 15em;
+    height: 8em;
+  }
+
+  #headbar {
+    border-top-right-radius: 100px;
+    border-top-left-radius: 100px;
+  }
+
+  #footbar {
+    border-bottom-left-radius: 100px;
+    border-bottom-right-radius: 100px;
+  }
+
+  #headbar, #footbar, #leftSidebar, #rightSidebar {
+    border-width: 10px;
   }
 
   #chessBoard {
     width: 50%;
   }
+
+  #gameStatus {
+    padding-top: 53px;
+    padding-bottom: 53px;
+    margin: 0px;
+    font-size: 2em;
+  }
+
+  #playBtn {
+    font-size: 2em;
+    margin-top: 30px;
+  }
 }
 
 /*Sizes for small screen size (DESKTOP)*/
 @media only screen and (max-width: 1300px) {
+
   #mainContent {
     width: 900px;
-    height: 700px;
     margin: auto;
   }
 
-  body {
-    height: 1250px;
-  }
-
-  table {
+  .flexContainer {
     height: 35em;
   }
-
-  .sidebar {
-    height: 35em;
+  
+  table, .sidebar {
+    height: 100%;
   }
-
+  
   .headFootbar {
-    height: 10em;
+    height: 8em;
+  }
+
+  .chessPiece {
+    font-size: 45px;
+    line-height: 40px;
   }
 
   #chessBoard {
     width: 70%;
   }
+
+  .sidebarContent {
+    font-size: 0.75em;
+  }
+
+  #headbar {
+    border-top-right-radius: 100px;
+    border-top-left-radius: 100px;
+  }
+
+  #footbar {
+    border-bottom-left-radius: 100px;
+    border-bottom-right-radius: 100px;
+  }
+
+  #headbar, #footbar, #leftSidebar, #rightSidebar {
+    border-width: 8px;
+  }
+
+  #gameStatus {
+    padding-top: 56px;
+    padding-bottom: 56px;
+    margin: 0px;
+    font-size: 1.5em;
+  }
+
+  #playBtn {
+    font-size: 1.5em;
+    margin-top: 30px;
+  }
+
 }
 
+/*FLEX CONTAINER FOR CHESS AND SIDEBARS*/
 .flexContainer {
   display: flex;
   margin: center;
@@ -60,24 +128,14 @@
   justify-content: center;
 }
 
+/*CHESS TABLE*/
+
 table {
   text-align: center;
   border: 10px;
   border-style: solid;
   border-color: #B22222;
-}
-
-.chessPiece {
-  font-size: 52px;
-  line-height: 40px;
-}
-
-header, .sidebarContent {
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-}
-
-header {
-  text-align: center;
+  border-collapse: collapse;
 }
 
 .blackSquare, .whiteSquare {
@@ -94,13 +152,14 @@ header {
   background-color: #808080;
 }
 
+/*SIDEBAR/FOOTBAR/HEADBAR*/
+
 .sidebar {
   background-color: #FFB6C1;
   width: 25%;
 }
 
 .sidebarContent {
-  padding-right: 2em;
   text-align: center;
 }
 
@@ -111,3 +170,59 @@ header {
 .headFootbar {
   background-color: #FFB6C1;
 }
+
+#headbar {
+  border-right-style: solid;
+  border-left-style: solid;
+  border-top-style: solid;
+}
+
+#footbar {
+  border-bottom-style: solid;
+  border-right-style: solid;
+  border-left-style: solid;
+  position: relative;
+
+}
+
+
+#leftSidebar {
+  border-left-style: solid;
+}
+
+#rightSidebar {
+  border-right-style: solid;
+}
+
+#headbar, #footbar, #leftSidebar, #rightSidebar {
+  border-color: #c1ffb6;
+}
+
+/*HEADBAR CONTENT*/
+
+#gameStatus, .sidebarContent, #playBtn {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+#gameStatus {
+  text-align: center;
+  font-weight: bold;
+}
+
+#currentPlayer {
+  font-weight: normal;
+}
+
+#playBtn {
+  text-align: center;
+  background-color: #008CBA;
+  color: white;
+  cursor: pointer;
+  display: block;
+  height: 50%;
+  width: 20%;
+  margin-left: 40%;
+  margin-right: 40%;
+  position: absolute;
+}
+

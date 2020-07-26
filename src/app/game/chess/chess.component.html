@@ -2,19 +2,15 @@
   <div id="mainContent">
     <!--Header Bar Container-->
     <div id="headbar" class = "headFootbar">
-      <header>
-        <h2 id="gameStatus">Current Player: <span id="currentPlayer"></span></h2>
-      </header>
+      <p id="gameStatus">Current Player: <span id="currentPlayer"></span></p>
     </div>
     <!--Chessboard Container-->
     <div class="flexContainer">
       <!--Left SideBar Container-->
       <div id="leftSidebar" class="sidebar">
         <div class="sidebarContent">
-          <h2>White Player</h2>
-          <ul>
-            <li>King Status: <span id="whiteKingStatus">Safe</span></li>
-          </ul>
+          <h2>White Player ♔</h2>
+          <p>King Status: <span id="whiteKingStatus">Safe</span></p>
         </div>
       </div>
       <!-- Chessboard -->
@@ -105,15 +101,14 @@
       <!--Right Sidebar Container-->
       <div id="rightSidebar" class="sidebar">
         <div class="sidebarContent">
-          <h2>Black Player</h2>
-          <ul>
-            <li>King Status: <span id="blackKingStatus">Safe</span></li>
-          </ul>
+          <h2>Black Player ♚</h2>
+          <p>King Status: <span id="blackKingStatus">Safe</span></p>
         </div>
       </div>
     </div>
     <div id = "footbar" class = "headFootbar">
-
+      <!--Will have this switch to "Play Again?" when game over-->
+      <button id="playBtn">Reset Game</button>
     </div>
   </div>
 </body>

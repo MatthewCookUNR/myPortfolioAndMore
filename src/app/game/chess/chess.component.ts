@@ -386,7 +386,7 @@ export class ChessComponent implements OnInit {
       return
     }
     else if(this.whiteKingCheck) {
-      document.getElementById('whiteKingStatus').innerHTML = "Check, must move King";
+      document.getElementById('whiteKingStatus').innerHTML = "Check";
     }
     else {
       document.getElementById('whiteKingStatus').innerHTML = "Safe";
@@ -397,7 +397,7 @@ export class ChessComponent implements OnInit {
       return;
     }
     else if(this.blackKingCheck) {
-      document.getElementById('blackKingStatus').innerHTML = "Check, must move King";
+      document.getElementById('blackKingStatus').innerHTML = "Check";
     }
     else {
       document.getElementById('blackKingStatus').innerHTML = "Safe";
