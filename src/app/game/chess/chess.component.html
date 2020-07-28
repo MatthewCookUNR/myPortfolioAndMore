@@ -2,15 +2,23 @@
   <div id="mainContent">
     <!--Header Bar Container-->
     <div id="headbar" class = "headFootbar">
-      <p id="gameStatus">Current Player: <span id="currentPlayer"></span></p>
+      <p id="currentPlayerStatus">Current Player: <span id="currentPlayer"></span></p>
     </div>
     <!--Chessboard Container-->
     <div class="flexContainer">
       <!--Left SideBar Container-->
       <div id="leftSidebar" class="sidebar">
-        <div class="sidebarContent">
+        <div class="sidebarText">
           <h2>White Player ♔</h2>
-          <p>King Status: <span id="whiteKingStatus">Safe</span></p>
+          <p class="kingStatusTxt">King Status: <span id="whiteKingStatus">Safe</span></p>
+        </div>
+        <div class="piecesDeadStatusContainer deadWhiteContainer">
+          <p class="deadPiece" id="whiteKing">♔</p>
+          <p class="deadPiece"><span id="whiteQueen1">♕</span><span id="whiteQueen2">♕</span></p>
+          <p class="deadPiece"><span id="whiteRook1">♖</span><span id="whiteRook2">♖</span></p>
+          <p class="deadPiece"><span id="whiteBishop1">♗</span><span id="whiteBishop2">♗</span></p>
+          <p class="deadPiece"><span id="whiteKnight1">♘</span><span id="whiteKnight2">♘</span></p>
+          <p class="deadPiece"><span class="deadPawn">♙</span><span id="whitePawnNumber" class="deadPawn">x0</span></p>
         </div>
       </div>
       <!-- Chessboard -->
@@ -100,15 +108,26 @@
       </table>
       <!--Right Sidebar Container-->
       <div id="rightSidebar" class="sidebar">
-        <div class="sidebarContent">
+        <div class="sidebarText">
           <h2>Black Player ♚</h2>
-          <p>King Status: <span id="blackKingStatus">Safe</span></p>
+          <p class="kingStatusTxt">King Status: <span id="blackKingStatus">Safe</span></p>
+        </div>
+        <div class="piecesDeadStatusContainer deadBlackContainer">
+          <p class="deadPiece" id="blackKing">♚</p>
+          <p class="deadPiece"><span id="blackQueen1">♛</span><span id="blackQueen2">♛</span></p>
+          <p class="deadPiece"><span id="blackRook1">♜</span><span id="blackRook2">♜</span></p>
+          <p class="deadPiece"><span id="blackBishop1">♝</span><span id="blackBishop1">♝</span></p>
+          <p class="deadPiece"><span id="blackKnight1">♞</span><span id="blackKnight2">♞</span></p>
+          <p class="deadPiece"><span class="deadPawn">♟︎</span><span id="blackPawnNumber" class="deadPawn">x0</span></p>
         </div>
       </div>
     </div>
     <div id = "footbar" class = "headFootbar">
       <!--Will have this switch to "Play Again?" when game over-->
-      <button id="playBtn">Reset Game</button>
+      <div class="footbarContent">
+        <p id="gameStatusStatic">Game Status: <span id="gameStatus">In Progress</span></p>
+        <button id="playBtn">Reset Game</button>
+      </div>
     </div>
   </div>
 </body>

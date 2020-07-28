@@ -46,7 +46,7 @@
     width: 50%;
   }
 
-  #gameStatus {
+  #currentPlayerStatus {
     padding-top: 53px;
     padding-bottom: 53px;
     margin: 0px;
@@ -57,6 +57,31 @@
     font-size: 2em;
     margin-top: 30px;
   }
+
+  .deadPiece {
+    font-size: 52px;
+    display: inline-block;
+  }
+
+  #playBtn{
+    margin-top: 10px;
+    margin-left: 20px;
+    border-radius: 15px;
+    border-width: 1px;
+  }
+
+  .piecesDeadStatusContainer {
+    width: 50%;
+  }
+
+  .kingStatusTxt {
+    font-size: 1.25em;
+  }
+
+  h2 {
+    font-size: 1.75em;
+  }
+  
 }
 
 /*Sizes for small screen size (DESKTOP)*/
@@ -88,7 +113,7 @@
     width: 70%;
   }
 
-  .sidebarContent {
+  .sidebarText {
     font-size: 0.75em;
   }
 
@@ -106,16 +131,28 @@
     border-width: 8px;
   }
 
-  #gameStatus {
+  #currentPlayerStatus {
     padding-top: 56px;
     padding-bottom: 56px;
     margin: 0px;
     font-size: 1.5em;
   }
 
-  #playBtn {
+  #playBtn{
     font-size: 1.5em;
-    margin-top: 30px;
+    margin-top: 10px;
+    margin-left: 20px;
+    border-radius: 15px;
+    border-width: 1px;
+  }
+
+  .deadPiece {
+    font-size: 45px;
+    display: inline-block;
+  }
+
+  .piecesDeadStatusContainer {
+    width: 70%;
   }
 
 }
@@ -152,39 +189,20 @@ table {
   background-color: #808080;
 }
 
-/*SIDEBAR/FOOTBAR/HEADBAR*/
+/*SIDEBAR*/
 
 .sidebar {
   background-color: #FFB6C1;
   width: 25%;
 }
 
-.sidebarContent {
+.sidebarText {
   text-align: center;
 }
 
 .sidebar ul li {
   list-style: none;
 }
-
-.headFootbar {
-  background-color: #FFB6C1;
-}
-
-#headbar {
-  border-right-style: solid;
-  border-left-style: solid;
-  border-top-style: solid;
-}
-
-#footbar {
-  border-bottom-style: solid;
-  border-right-style: solid;
-  border-left-style: solid;
-  position: relative;
-
-}
-
 
 #leftSidebar {
   border-left-style: solid;
@@ -194,35 +212,86 @@ table {
   border-right-style: solid;
 }
 
+.piecesDeadStatusContainer {
+  text-align: center;
+  margin: auto;
+}
+
+.deadWhiteContainer {
+  background-color: #F8F8FF;
+  border-radius: 40px;
+  color: #a3a3a3;
+}
+
+.deadBlackContainer {
+  background-color: #F8F8FF;
+  border-radius: 40px;
+}
+
+.deadPiece {
+  text-align: center;
+  margin: 0px;
+  color: #a3a3a3;
+}
+
+.deadPawn {
+  color: black;
+}
+
+/*FOOTBAR/HEADBAR*/
+.headFootbar {
+  background-color: #FFB6C1;
+}
+
+#headbar {
+  border-right-style: solid;
+  border-left-style: solid;
+  border-top-style: solid;
+  text-align: center;
+}
+
+#footbar {
+  border-bottom-style: solid;
+  border-right-style: solid;
+  border-left-style: solid;
+  position: relative;
+}
+
 #headbar, #footbar, #leftSidebar, #rightSidebar {
   border-color: #c1ffb6;
 }
 
-/*HEADBAR CONTENT*/
+#gameStatusStatic {
+  display: inline-block;
+  font-size: 24px;
+}
 
-#gameStatus, .sidebarContent, #playBtn {
+.footbarContent {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  padding-right: 18%;
+}
+
+/*OTHER CSS*/
+
+body {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-#gameStatus {
-  text-align: center;
+#currentPlayerStatus, #gameStatusStatic {
   font-weight: bold;
 }
 
-#currentPlayer {
+#currentPlayer, #gameStatus {
   font-weight: normal;
 }
 
 #playBtn {
-  text-align: center;
-  background-color: #008CBA;
-  color: white;
+  background-color: #c1ffb6;
   cursor: pointer;
-  display: block;
   height: 50%;
-  width: 20%;
-  margin-left: 40%;
-  margin-right: 40%;
   position: absolute;
+  outline: none;
 }
 
