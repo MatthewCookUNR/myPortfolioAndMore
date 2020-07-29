@@ -126,7 +126,7 @@
       <!--Will have this switch to "Play Again?" when game over-->
       <div class="footbarContent">
         <p id="gameStatusStatic">Game Status: <span id="gameStatus">In Progress</span></p>
-        <button id="playBtn">Reset Game</button>
+        <button (click)="restartGame()" id="playBtn">Reset Game</button>
       </div>
     </div>
   </div>

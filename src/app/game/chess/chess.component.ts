@@ -37,7 +37,6 @@ export class ChessComponent implements OnInit {
     this.myChessPieces[0].greet();
     this.myChessPieces[16].greet();
     this.newGame(); 
-    this.calculateAllPossibleMoves();
   }
 
   //Handles on click of square events
@@ -111,7 +110,7 @@ export class ChessComponent implements OnInit {
   }
 
   //Boards 2D Arrays for boards
-  buildBoards() {
+  buildBoards(): void  {
     //2D Array (Table) used to map where the pieces are on table
     //
     this.myChessBoard = [['W','W','W','W','WK','W','W','W']
@@ -147,8 +146,7 @@ export class ChessComponent implements OnInit {
   }
 
   //Build ChessPiece objects for game
-  //Note: Only adds pawns for now
-  buildPieces() {
+  buildPieces(): void  {
 
     this.myChessPieces = new Array(32);
 
@@ -186,7 +184,7 @@ export class ChessComponent implements OnInit {
   }
 
   //Function resets board back to original color/state
-  cleanBoardMarks() {
+  cleanBoardMarks(): void  {
     let whiteSquareObj = document.getElementsByClassName("whiteSquare") as HTMLCollectionOf<HTMLElement>;;
     let blackSquareObj = document.getElementsByClassName("blackSquare") as HTMLCollectionOf<HTMLElement>;;
     for(let i = 0; i < whiteSquareObj.length; i++) {
@@ -265,7 +263,7 @@ export class ChessComponent implements OnInit {
   }
 
   //Switches player turn in backend
-  nextTurn() {
+  nextTurn(): void  {
     if(this.currentPlayerColorStr == 'W') {
       this.currentPlayerColorStr = 'B'
       this.switchPlayerOnScreen('B');
@@ -277,7 +275,7 @@ export class ChessComponent implements OnInit {
   }
 
   //Picks a random player and starts game
-  newGame() {
+  newGame(): void  {
     let randomPlayer = Math.floor(Math.random() * 2);
     if(randomPlayer == 0) {
       this.currentPlayerColorStr='W';
@@ -296,7 +294,7 @@ export class ChessComponent implements OnInit {
     }
   }
 
-  clearPossibleAttacksAndMovements() {
+  clearPossibleAttacksAndMovements(): void  {
     //2D Array (Table) used to map possible movements of white and black pieces
     //This is needed to find out if King is in check/checkmate
     this.possibleBlackMovementsBoard =
@@ -355,10 +353,11 @@ export class ChessComponent implements OnInit {
     console.log("Black Noves\n");
     console.log(this.possibleBlackMovementsBoard);
 
-    this.updateKingStatus();
+    this.updateKingStatusUI();
 
   }
 
+  //Sets Kings as in check if applicable
   areKingsInCheck(): void {
     if(this.possibleBlackMovementsBoard[this.myChessPieces[this.myChessPieces.length-2].row][this.myChessPieces[this.myChessPieces.length-2].column] == 'R') {
       this.whiteKingCheck = true;
@@ -380,7 +379,8 @@ export class ChessComponent implements OnInit {
     }
   }
 
-  updateKingStatus(): void {
+  //Updates UI with King's current status
+  updateKingStatusUI(): void {
     if((this.myChessPieces[this.myChessPieces.length-2] as King).isCheckMate) {
       document.getElementById('whiteKingStatus').innerHTML = "Checkmate, Game Over";
       return
@@ -402,6 +402,81 @@ export class ChessComponent implements OnInit {
     else {
       document.getElementById('blackKingStatus').innerHTML = "Safe";
     }
+  }
+
+  restartGame(): void {
+    //Back-end operations
+    this.buildBoards();
+    this.buildPieces();
+
+    //Front-end operations
+    this.cleanBoardMarks()
+    this.restartPieceGraveyardsUI();
+    this.restartGamePiecesUI();
+
+    //Switch Player
+    this.newGame(); 
+    this.clickedPieceIndex = -1;
+  }
+
+  restartGamePiecesUI(): void {
+
+    //Create Special Pieces
+    
+    this.movePieceUIOnly("sqrRow1Col1", '♖');
+    this.movePieceUIOnly("sqrRow1Col2", '♘');
+    this.movePieceUIOnly("sqrRow1Col3", '♗');
+    this.movePieceUIOnly("sqrRow1Col4", '♕');
+    this.movePieceUIOnly("sqrRow1Col5", '♔');
+    this.movePieceUIOnly("sqrRow1Col6", '♗');
+    this.movePieceUIOnly("sqrRow1Col7", '♘');
+    this.movePieceUIOnly("sqrRow1Col8", '♖');
+
+    this.movePieceUIOnly("sqrRow8Col1", '♜');
+    this.movePieceUIOnly("sqrRow8Col2", '♞');
+    this.movePieceUIOnly("sqrRow8Col3", '♝');
+    this.movePieceUIOnly("sqrRow8Col4", '♛');
+    this.movePieceUIOnly("sqrRow8Col5", '♚');
+    this.movePieceUIOnly("sqrRow8Col6", '♝');
+    this.movePieceUIOnly("sqrRow8Col7", '♞');
+    this.movePieceUIOnly("sqrRow8Col8", '♜');
+
+
+    //Create Pawns
+    for(let i = 1; i < 9; i++) {
+      this.movePieceUIOnly("sqrRow2Col" + i, '♙');
+      this.movePieceUIOnly("sqrRow7Col" + i, '♟︎');
+    }
+
+    //Clear Remaining spaces
+    for(let i = 1; i < 9; i++) {
+      for(let j = 3; j < 7; j++) {
+        document.getElementById("sqrRow" + j + "Col" + i).innerHTML ='';
+      }
+    }
+
+  }
+
+  movePieceUIOnly(sqrId: string, pieceStr: string) {
+    let sqrObj = document.getElementById(sqrId);
+    sqrObj.innerText="";
+    let childSpan = document.createElement("SPAN");
+    childSpan.innerHTML = pieceStr;
+    childSpan.classList.add("chessPiece");
+    let myMediaMatch = window.matchMedia("(min-width: 1300px)");
+    if(myMediaMatch.matches) {
+      childSpan.style.fontSize="52px";
+      childSpan.style.lineHeight="40px";
+    }
+    else {
+      childSpan.style.fontSize="45px";
+      childSpan.style.lineHeight="40px";
+    }
+    sqrObj.appendChild(childSpan);
+  }
+
+  restartPieceGraveyardsUI(): void {
+
   }
 
 }
