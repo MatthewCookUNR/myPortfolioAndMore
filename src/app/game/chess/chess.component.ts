@@ -237,7 +237,6 @@ export class ChessComponent implements OnInit {
     //Clear movement board before moving
     this.cleanBoardMarks();
     this.clearAllPiecesPossibleMovement();
-    this.clearPossibleAttacksAndMovements();
     this.calculateAllPossibleMoves();
     this.nextTurn();
   }
@@ -312,29 +311,6 @@ export class ChessComponent implements OnInit {
     }
   }
 
-  clearPossibleAttacksAndMovements(): void  {
-    //2D Array (Table) used to map possible movements of white and black pieces
-    //This is needed to find out if King is in check/checkmate
-    this.possibleBlackMovementsBoard =
-                          [['','','','','','','','']
-                          ,['','','','','','','','']
-                          ,['','','','','','','','']
-                          ,['','','','','','','','']
-                          ,['','','','','','','','']
-                          ,['','','','','','','','']
-                          ,['','','','','','','','']
-                          ,['','','','','','','','']]; 
-    this.possibleWhiteMovementsBoard =
-                          [['','','','','','','','']
-                          ,['','','','','','','','']
-                          ,['','','','','','','','']
-                          ,['','','','','','','','']
-                          ,['','','','','','','','']
-                          ,['','','','','','','','']
-                          ,['','','','','','','','']
-                          ,['','','','','','','','']];
-  }
-
   //Functon needs to be updated to handle pieces that have been destroy
   //i.e. they have xpos = -1 and ypos = -1
   //Seems to be causing an error when destroying pieces
@@ -366,11 +342,6 @@ export class ChessComponent implements OnInit {
     //Black King
     this.myChessPieces[this.myChessPieces.length-1].calculatePossibleMovements(this.myChessBoard, this.possibleBlackMovementsBoard, this.possibleWhiteMovementsBoard);
 
-    console.log("White Moves\n")
-    console.log(this.possibleWhiteMovementsBoard);
-    console.log("Black Noves\n");
-    console.log(this.possibleBlackMovementsBoard);
-
     this.updateKingStatusUI();
 
   }
@@ -397,15 +368,129 @@ export class ChessComponent implements OnInit {
     }
   }
 
+  //Restart the Chess Game
+  restartGame(): void {
+
+    //Back-end operations
+    this.buildBoards();
+    this.buildPieces();
+    this.buildPiecesDead();
+
+    //Front-end operations
+    this.cleanBoardMarks()
+    this.restartPieceGraveyardsUI();
+    this.restartGamePiecesUI();
+
+    //Switch Player
+    this.newGame(); 
+    this.clickedPieceIndex = -1;
+  }
+
+  /*
+  *
+  * UI (DOM) Functions
+  * 
+  */
+
+  //Updates UI with King's current status
+  updateKingStatusUI(): void {
+  if((this.myChessPieces[this.myChessPieces.length-2] as King).isCheckMate) {
+    document.getElementById('whiteKingStatus').innerHTML = "Checkmate, Game Over";
+    return
+  }
+  else if(this.whiteKingCheck) {
+    document.getElementById('whiteKingStatus').innerHTML = "Check";
+  }
+  else {
+    document.getElementById('whiteKingStatus').innerHTML = "Safe";
+  }
+
+  if((this.myChessPieces[this.myChessPieces.length-1] as King).isCheckMate) {
+    document.getElementById('blackKingStatus').innerHTML = "Checkmate, Game Over";
+    return;
+  }
+  else if(this.blackKingCheck) {
+    document.getElementById('blackKingStatus').innerHTML = "Check";
+  }
+  else {
+    document.getElementById('blackKingStatus').innerHTML = "Safe";
+  }
+}
+  //Resets all pieces in chess game to original state
+  restartGamePiecesUI(): void {
+
+    //Create Special Pieces
+    this.movePieceUIOnly("sqrRow1Col1", '♖');
+    this.movePieceUIOnly("sqrRow1Col2", '♘');
+    this.movePieceUIOnly("sqrRow1Col3", '♗');
+    this.movePieceUIOnly("sqrRow1Col4", '♕');
+    this.movePieceUIOnly("sqrRow1Col5", '♔');
+    this.movePieceUIOnly("sqrRow1Col6", '♗');
+    this.movePieceUIOnly("sqrRow1Col7", '♘');
+    this.movePieceUIOnly("sqrRow1Col8", '♖');
+
+    this.movePieceUIOnly("sqrRow8Col1", '♜');
+    this.movePieceUIOnly("sqrRow8Col2", '♞');
+    this.movePieceUIOnly("sqrRow8Col3", '♝');
+    this.movePieceUIOnly("sqrRow8Col4", '♛');
+    this.movePieceUIOnly("sqrRow8Col5", '♚');
+    this.movePieceUIOnly("sqrRow8Col6", '♝');
+    this.movePieceUIOnly("sqrRow8Col7", '♞');
+    this.movePieceUIOnly("sqrRow8Col8", '♜');
+
+
+    //Create Pawns
+    for(let i = 1; i < 9; i++) {
+      this.movePieceUIOnly("sqrRow2Col" + i, '♙');
+      this.movePieceUIOnly("sqrRow7Col" + i, '♟︎');
+    }
+
+    //Clear Remaining spaces
+    for(let i = 1; i < 9; i++) {
+      for(let j = 3; j < 7; j++) {
+        document.getElementById("sqrRow" + j + "Col" + i).innerHTML ='';
+      }
+    }
+
+  }
+
+  //Moves piece without touching array of board
+  //Used for restarting game only
+  movePieceUIOnly(sqrId: string, pieceStr: string) {
+    let sqrObj = document.getElementById(sqrId);
+    sqrObj.innerText="";
+    let childSpan = document.createElement("SPAN");
+    childSpan.innerHTML = pieceStr;
+    childSpan.classList.add("chessPiece");
+    let myMediaMatch = window.matchMedia("(min-width: 1300px)");
+    //Set piece styling based on screen size
+    if(myMediaMatch.matches) {
+      childSpan.style.fontSize="52px";
+      childSpan.style.lineHeight="40px";
+    }
+    else {
+      childSpan.style.fontSize="45px";
+      childSpan.style.lineHeight="40px";
+    }
+    sqrObj.appendChild(childSpan);
+  }
+
+  
+  //Marks all pieces and keeps track of how many dead total so far
   markPieceGraveyard(pieceType: string, isBlack: boolean): void {
     if(pieceType === "Pawn") {
       if(!isBlack) {
           this.numWhitePiecesDeadList[0]++;
           document.getElementById('whitePawnNumber').innerHTML= "x" + this.numWhitePiecesDeadList[0];
+          document.getElementById('whitePawnNumber').style.color="black";
+          document.getElementById('whitePawn').style.color="black";
       }
       else {
         this.numBlackPiecesDeadList[0]++;
         document.getElementById('blackPawnNumber').innerHTML= "x" + this.numBlackPiecesDeadList[0];
+        document.getElementById('blackPawnNumber').style.color="black";
+        document.getElementById('blackPawn').style.color="black";
+
       }
     }
     else if(pieceType === "Rook")
@@ -491,114 +576,9 @@ export class ChessComponent implements OnInit {
         document.getElementById('blackQueen1').style.color="black";
       }
     }
-
   }
 
-  //Restart the Chess Game
-  restartGame(): void {
-
-    //Back-end operations
-    this.buildBoards();
-    this.buildPieces();
-    this.buildPiecesDead();
-
-    //Front-end operations
-    this.cleanBoardMarks()
-    this.restartPieceGraveyardsUI();
-    this.restartGamePiecesUI();
-
-    //Switch Player
-    this.newGame(); 
-    this.clickedPieceIndex = -1;
-  }
-
-  /*
-  *
-  * UI (DOM) Functions
-  * 
-  */
-  //Updates UI with King's current status
-  updateKingStatusUI(): void {
-  if((this.myChessPieces[this.myChessPieces.length-2] as King).isCheckMate) {
-    document.getElementById('whiteKingStatus').innerHTML = "Checkmate, Game Over";
-    return
-  }
-  else if(this.whiteKingCheck) {
-    document.getElementById('whiteKingStatus').innerHTML = "Check";
-  }
-  else {
-    document.getElementById('whiteKingStatus').innerHTML = "Safe";
-  }
-
-  if((this.myChessPieces[this.myChessPieces.length-1] as King).isCheckMate) {
-    document.getElementById('blackKingStatus').innerHTML = "Checkmate, Game Over";
-    return;
-  }
-  else if(this.blackKingCheck) {
-    document.getElementById('blackKingStatus').innerHTML = "Check";
-  }
-  else {
-    document.getElementById('blackKingStatus').innerHTML = "Safe";
-  }
-}
-  restartGamePiecesUI(): void {
-
-    //Create Special Pieces
-    this.movePieceUIOnly("sqrRow1Col1", '♖');
-    this.movePieceUIOnly("sqrRow1Col2", '♘');
-    this.movePieceUIOnly("sqrRow1Col3", '♗');
-    this.movePieceUIOnly("sqrRow1Col4", '♕');
-    this.movePieceUIOnly("sqrRow1Col5", '♔');
-    this.movePieceUIOnly("sqrRow1Col6", '♗');
-    this.movePieceUIOnly("sqrRow1Col7", '♘');
-    this.movePieceUIOnly("sqrRow1Col8", '♖');
-
-    this.movePieceUIOnly("sqrRow8Col1", '♜');
-    this.movePieceUIOnly("sqrRow8Col2", '♞');
-    this.movePieceUIOnly("sqrRow8Col3", '♝');
-    this.movePieceUIOnly("sqrRow8Col4", '♛');
-    this.movePieceUIOnly("sqrRow8Col5", '♚');
-    this.movePieceUIOnly("sqrRow8Col6", '♝');
-    this.movePieceUIOnly("sqrRow8Col7", '♞');
-    this.movePieceUIOnly("sqrRow8Col8", '♜');
-
-
-    //Create Pawns
-    for(let i = 1; i < 9; i++) {
-      this.movePieceUIOnly("sqrRow2Col" + i, '♙');
-      this.movePieceUIOnly("sqrRow7Col" + i, '♟︎');
-    }
-
-    //Clear Remaining spaces
-    for(let i = 1; i < 9; i++) {
-      for(let j = 3; j < 7; j++) {
-        document.getElementById("sqrRow" + j + "Col" + i).innerHTML ='';
-      }
-    }
-
-  }
-
-  //Moves piece without touching array of board
-  //Used for restarting game only
-  movePieceUIOnly(sqrId: string, pieceStr: string) {
-    let sqrObj = document.getElementById(sqrId);
-    sqrObj.innerText="";
-    let childSpan = document.createElement("SPAN");
-    childSpan.innerHTML = pieceStr;
-    childSpan.classList.add("chessPiece");
-    let myMediaMatch = window.matchMedia("(min-width: 1300px)");
-    //Set piece styling based on screen size
-    if(myMediaMatch.matches) {
-      childSpan.style.fontSize="52px";
-      childSpan.style.lineHeight="40px";
-    }
-    else {
-      childSpan.style.fontSize="45px";
-      childSpan.style.lineHeight="40px";
-    }
-    sqrObj.appendChild(childSpan);
-  }
-
+  //Cleans Piece Graveyard and resets it to orignal state
   restartPieceGraveyardsUI(): void {
     //White Pieces
     document.getElementById('whiteQueen1').style.color="#a3a3a3";
@@ -608,6 +588,7 @@ export class ChessComponent implements OnInit {
     document.getElementById('whiteBishop2').style.color="#a3a3a3";
     document.getElementById('whiteKnight1').style.color="#a3a3a3";
     document.getElementById('whiteKnight2').style.color="#a3a3a3";
+    document.getElementById('whitePawnNumber').style.color="#a3a3a3"
     document.getElementById('whitePawnNumber').innerHTML= "x0";
 
     //Black Pieces
@@ -618,6 +599,7 @@ export class ChessComponent implements OnInit {
     document.getElementById('blackBishop2').style.color="#a3a3a3";
     document.getElementById('blackKnight1').style.color="#a3a3a3";
     document.getElementById('blackKnight2').style.color="#a3a3a3";
+    document.getElementById('blackPawnNumber').style.color="#a3a3a3"
     document.getElementById('blackPawnNumber').innerHTML= "x0";
   }
 
