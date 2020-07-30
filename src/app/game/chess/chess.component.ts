@@ -25,10 +25,13 @@ export class ChessComponent implements OnInit {
   currentPlayerColorStr: string;
   blackKingCheck: boolean = false;
   whiteKingCheck: boolean = false;
+  numWhitePiecesDeadList: number[];
+  numBlackPiecesDeadList: number[];
 
   constructor() {
     this.buildPieces();
     this.buildBoards();
+    this.buildPiecesDead();
     this.clickedPieceIndex = -1;
   }
 
@@ -148,6 +151,7 @@ export class ChessComponent implements OnInit {
   //Build ChessPiece objects for game
   buildPieces(): void  {
 
+
     this.myChessPieces = new Array(32);
 
     //Creates Pawns
@@ -181,6 +185,19 @@ export class ChessComponent implements OnInit {
     //Create Kings
     this.myChessPieces[this.myChessPieces.length-2] = new King(0, 4, false);
     this.myChessPieces[this.myChessPieces.length-1] = new King(7, 4, true);
+
+  }
+
+  //Recreates list of dead pieces
+  buildPiecesDead():void {
+    this.numWhitePiecesDeadList = new Array(5);
+    this.numBlackPiecesDeadList = new Array(5);
+
+    //Create Dead Pieces List
+    for(let i = 0; i < 5; i++) {
+      this.numWhitePiecesDeadList[i] = 0;
+      this.numBlackPiecesDeadList[i] = 0;
+    }
   }
 
   //Function resets board back to original color/state
@@ -239,6 +256,7 @@ export class ChessComponent implements OnInit {
     else {
       (this.myChessPieces[this.myChessPieces.length-1] as King).numSubordinates--;
     }
+    this.markPieceGraveyard(this.myChessPieces[pieceIndex].type, this.myChessPieces[pieceIndex].isBlack);
 
     //Will possibly look into removing piece from list to make searches
     //more efficient. Weird errors occured when using line below
@@ -379,35 +397,110 @@ export class ChessComponent implements OnInit {
     }
   }
 
-  //Updates UI with King's current status
-  updateKingStatusUI(): void {
-    if((this.myChessPieces[this.myChessPieces.length-2] as King).isCheckMate) {
-      document.getElementById('whiteKingStatus').innerHTML = "Checkmate, Game Over";
-      return
+  markPieceGraveyard(pieceType: string, isBlack: boolean): void {
+    if(pieceType === "Pawn") {
+      if(!isBlack) {
+          this.numWhitePiecesDeadList[0]++;
+          document.getElementById('whitePawnNumber').innerHTML= "x" + this.numWhitePiecesDeadList[0];
+      }
+      else {
+        this.numBlackPiecesDeadList[0]++;
+        document.getElementById('blackPawnNumber').innerHTML= "x" + this.numBlackPiecesDeadList[0];
+      }
     }
-    else if(this.whiteKingCheck) {
-      document.getElementById('whiteKingStatus').innerHTML = "Check";
+    else if(pieceType === "Rook")
+    {
+      if(!isBlack) {
+        if(this.numWhitePiecesDeadList[1] != 1) {
+          this.numWhitePiecesDeadList[1]++;
+          document.getElementById('whiteRook2').style.color="black";
+
+        }
+        else {
+          this.numWhitePiecesDeadList[1]++;
+          document.getElementById('whiteRook1').style.color="black";
+        }
+      }
+      else {
+        if(this.numBlackPiecesDeadList[1] != 1) {
+          this.numBlackPiecesDeadList[1]++;
+          document.getElementById('blackRook2').style.color="black";
+
+        }
+        else {
+          this.numBlackPiecesDeadList[1]++;
+          document.getElementById('blackRook1').style.color="black";
+        }
+      }
     }
-    else {
-      document.getElementById('whiteKingStatus').innerHTML = "Safe";
+    else if(pieceType === "Bishop") {
+      if(!isBlack) {
+        if(this.numWhitePiecesDeadList[2] != 1) {
+          this.numWhitePiecesDeadList[2]++;
+          document.getElementById('whiteBishop2').style.color="black";
+
+        }
+        else {
+          this.numWhitePiecesDeadList[2]++;
+          document.getElementById('whiteBishop1').style.color="black";
+        }
+      }
+      else {
+        if(this.numBlackPiecesDeadList[2] != 1) {
+          this.numBlackPiecesDeadList[2]++;
+          document.getElementById('blackBishop2').style.color="black";
+
+        }
+        else {
+          this.numBlackPiecesDeadList[2]++;
+          document.getElementById('blackBishop1').style.color="black";
+        }
+      }
+    }
+    else if(pieceType === "Knight") {
+      if(!isBlack) {
+        if(this.numWhitePiecesDeadList[3] != 1) {
+          this.numWhitePiecesDeadList[3]++;
+          document.getElementById('whiteKnight2').style.color="black";
+
+        }
+        else {
+          this.numWhitePiecesDeadList[3]++;
+          document.getElementById('whiteKnight1').style.color="black";
+        }
+      }
+      else {
+        if(this.numBlackPiecesDeadList[3] != 1) {
+          this.numBlackPiecesDeadList[3]++;
+          document.getElementById('blackKnight2').style.color="black";
+
+        }
+        else {
+          this.numBlackPiecesDeadList[3]++;
+          document.getElementById('blackKnight1').style.color="black";
+        }
+      }
+    }
+    else if(pieceType === "Queen") {
+      if(!isBlack) {
+        this.numWhitePiecesDeadList[4]++;
+        document.getElementById('whiteQueen1').style.color="black";
+      }
+      else {
+        this.numBlackPiecesDeadList[4]++;
+        document.getElementById('blackQueen1').style.color="black";
+      }
     }
 
-    if((this.myChessPieces[this.myChessPieces.length-1] as King).isCheckMate) {
-      document.getElementById('blackKingStatus').innerHTML = "Checkmate, Game Over";
-      return;
-    }
-    else if(this.blackKingCheck) {
-      document.getElementById('blackKingStatus').innerHTML = "Check";
-    }
-    else {
-      document.getElementById('blackKingStatus').innerHTML = "Safe";
-    }
   }
 
+  //Restart the Chess Game
   restartGame(): void {
+
     //Back-end operations
     this.buildBoards();
     this.buildPieces();
+    this.buildPiecesDead();
 
     //Front-end operations
     this.cleanBoardMarks()
@@ -419,10 +512,38 @@ export class ChessComponent implements OnInit {
     this.clickedPieceIndex = -1;
   }
 
+  /*
+  *
+  * UI (DOM) Functions
+  * 
+  */
+  //Updates UI with King's current status
+  updateKingStatusUI(): void {
+  if((this.myChessPieces[this.myChessPieces.length-2] as King).isCheckMate) {
+    document.getElementById('whiteKingStatus').innerHTML = "Checkmate, Game Over";
+    return
+  }
+  else if(this.whiteKingCheck) {
+    document.getElementById('whiteKingStatus').innerHTML = "Check";
+  }
+  else {
+    document.getElementById('whiteKingStatus').innerHTML = "Safe";
+  }
+
+  if((this.myChessPieces[this.myChessPieces.length-1] as King).isCheckMate) {
+    document.getElementById('blackKingStatus').innerHTML = "Checkmate, Game Over";
+    return;
+  }
+  else if(this.blackKingCheck) {
+    document.getElementById('blackKingStatus').innerHTML = "Check";
+  }
+  else {
+    document.getElementById('blackKingStatus').innerHTML = "Safe";
+  }
+}
   restartGamePiecesUI(): void {
 
     //Create Special Pieces
-    
     this.movePieceUIOnly("sqrRow1Col1", '♖');
     this.movePieceUIOnly("sqrRow1Col2", '♘');
     this.movePieceUIOnly("sqrRow1Col3", '♗');
@@ -457,6 +578,8 @@ export class ChessComponent implements OnInit {
 
   }
 
+  //Moves piece without touching array of board
+  //Used for restarting game only
   movePieceUIOnly(sqrId: string, pieceStr: string) {
     let sqrObj = document.getElementById(sqrId);
     sqrObj.innerText="";
@@ -464,6 +587,7 @@ export class ChessComponent implements OnInit {
     childSpan.innerHTML = pieceStr;
     childSpan.classList.add("chessPiece");
     let myMediaMatch = window.matchMedia("(min-width: 1300px)");
+    //Set piece styling based on screen size
     if(myMediaMatch.matches) {
       childSpan.style.fontSize="52px";
       childSpan.style.lineHeight="40px";
@@ -476,7 +600,25 @@ export class ChessComponent implements OnInit {
   }
 
   restartPieceGraveyardsUI(): void {
+    //White Pieces
+    document.getElementById('whiteQueen1').style.color="#a3a3a3";
+    document.getElementById('whiteRook1').style.color="#a3a3a3";
+    document.getElementById('whiteRook2').style.color="#a3a3a3";
+    document.getElementById('whiteBishop1').style.color="#a3a3a3";
+    document.getElementById('whiteBishop2').style.color="#a3a3a3";
+    document.getElementById('whiteKnight1').style.color="#a3a3a3";
+    document.getElementById('whiteKnight2').style.color="#a3a3a3";
+    document.getElementById('whitePawnNumber').innerHTML= "x0";
 
+    //Black Pieces
+    document.getElementById('blackQueen1').style.color="#a3a3a3";
+    document.getElementById('blackRook1').style.color="#a3a3a3";
+    document.getElementById('blackRook2').style.color="#a3a3a3";
+    document.getElementById('blackBishop1').style.color="#a3a3a3";
+    document.getElementById('blackBishop2').style.color="#a3a3a3";
+    document.getElementById('blackKnight1').style.color="#a3a3a3";
+    document.getElementById('blackKnight2').style.color="#a3a3a3";
+    document.getElementById('blackPawnNumber').innerHTML= "x0";
   }
 
 }
