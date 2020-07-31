@@ -92,7 +92,6 @@ describe('ChessComponent', () => {
 
     //Calculate new movements now that check/checkmate possible
     component.clearAllPiecesPossibleMovement();
-    component.clearPossibleAttacksAndMovements();
     component.calculateAllPossibleMoves();
 
     //King should be in check, return true to pass test;
@@ -161,7 +160,6 @@ describe('ChessComponent', () => {
 
     //Calculate new movements now that check/checkmate possible
     component.clearAllPiecesPossibleMovement();
-    component.clearPossibleAttacksAndMovements();
     component.calculateAllPossibleMoves();
 
     //King should be in check, return true to pass test;
@@ -239,7 +237,6 @@ describe('ChessComponent', () => {
 
     //Calculate new movements now that check/checkmate possible
     component.clearAllPiecesPossibleMovement();
-    component.clearPossibleAttacksAndMovements();
     component.calculateAllPossibleMoves();
 
     //King should be in check, return true to pass test;
@@ -306,7 +303,6 @@ describe('ChessComponent', () => {
 
     //Calculate new movements now that check/checkmate possible
     component.clearAllPiecesPossibleMovement();
-    component.clearPossibleAttacksAndMovements();
     component.calculateAllPossibleMoves();
 
     //King should be in check, return true to pass test;
@@ -376,7 +372,6 @@ describe('ChessComponent', () => {
 
     //Calculate new movements now that check/checkmate possible
     component.clearAllPiecesPossibleMovement();
-    component.clearPossibleAttacksAndMovements();
     component.calculateAllPossibleMoves();
 
     //King should be in check, return true to pass test;
@@ -446,7 +441,6 @@ describe('ChessComponent', () => {
 
     //Calculate new movements now that check/checkmate possible
     component.clearAllPiecesPossibleMovement();
-    component.clearPossibleAttacksAndMovements();
     component.calculateAllPossibleMoves();
     console.log("Final attack board: ");
     console.log(component.possibleBlackMovementsBoard);

@@ -2,7 +2,8 @@
   <div id="mainContent">
     <!--Header Bar Container-->
     <div id="headbar" class = "headFootbar">
-      <p id="currentPlayerStatus">Current Player: <span id="currentPlayer"></span></p>
+      <p id="currentPlayerStatus" [hidden]="gameOver" class="currentGameStatus">Current Player: <span id="currentPlayer"></span></p>
+      <p id="currentWinningStatus" [hidden]="!gameOver" class="currentGameStatus">Checkmate! <span id="winningPlayer"></span> Wins!</p>
     </div>
     <!--Chessboard Container-->
     <div class="flexContainer">
@@ -124,7 +125,7 @@
       <!--Will have this switch to "Play Again?" when game over-->
       <div class="footbarContent">
         <p id="gameStatusStatic">Game Status: <span id="gameStatus">In Progress</span></p>
-        <button (click)="restartGame()" id="playBtn">Reset Game</button>
+        <button (click)="restartGame()" id="restartBtn">Reset Game</button>
       </div>
     </div>
   </div>

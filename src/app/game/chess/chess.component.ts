@@ -27,6 +27,7 @@ export class ChessComponent implements OnInit {
   whiteKingCheck: boolean = false;
   numWhitePiecesDeadList: number[];
   numBlackPiecesDeadList: number[];
+  gameOver: boolean = false;
 
   constructor() {
     this.buildPieces();
@@ -37,8 +38,10 @@ export class ChessComponent implements OnInit {
 
   ngOnInit(): void 
   {
-    this.myChessPieces[0].greet();
-    this.myChessPieces[16].greet();
+
+  }
+  
+  ngAfterViewInit(): void {
     this.newGame(); 
   }
 
@@ -48,6 +51,8 @@ export class ChessComponent implements OnInit {
     var squareId = target.id;
     let row: number = parseInt(squareId[6])-1;
     let col: number = parseInt(squareId[10])-1;
+    //Used for testing only, will be taken out
+    //this.setCheckmateManuallyTest("W");
 
     //Case 1: Click is a piece on your side so calculate movement possible
     //and mark board
@@ -238,6 +243,7 @@ export class ChessComponent implements OnInit {
     this.cleanBoardMarks();
     this.clearAllPiecesPossibleMovement();
     this.calculateAllPossibleMoves();
+    //if(this.)
     this.nextTurn();
   }
 
@@ -255,7 +261,7 @@ export class ChessComponent implements OnInit {
     else {
       (this.myChessPieces[this.myChessPieces.length-1] as King).numSubordinates--;
     }
-    this.markPieceGraveyard(this.myChessPieces[pieceIndex].type, this.myChessPieces[pieceIndex].isBlack);
+    this.markPieceGraveyardUI(this.myChessPieces[pieceIndex].type, this.myChessPieces[pieceIndex].isBlack);
 
     //Will possibly look into removing piece from list to make searches
     //more efficient. Weird errors occured when using line below
@@ -268,26 +274,15 @@ export class ChessComponent implements OnInit {
     //this.myChessPieces.splice(pieceIndex, 1);
   }
 
-  //Switches Current Player on screen to opposite team
-  switchPlayerOnScreen(currentPlayerStr: string) {
-    let myTextSpan: HTMLElement = document.getElementById("currentPlayer");
-    if(currentPlayerStr == 'W') {
-      myTextSpan.innerHTML="White";
-    }
-    else {
-      myTextSpan.innerHTML="Black";
-    }
-  }
-
   //Switches player turn in backend
   nextTurn(): void  {
     if(this.currentPlayerColorStr == 'W') {
       this.currentPlayerColorStr = 'B'
-      this.switchPlayerOnScreen('B');
+      this.switchPlayerOnScreenUI('B');
     }
     else {
       this.currentPlayerColorStr = 'W'
-      this.switchPlayerOnScreen('W');
+      this.switchPlayerOnScreenUI('W');
     }
   }
 
@@ -296,11 +291,11 @@ export class ChessComponent implements OnInit {
     let randomPlayer = Math.floor(Math.random() * 2);
     if(randomPlayer == 0) {
       this.currentPlayerColorStr='W';
-      this.switchPlayerOnScreen('W');
+      this.switchPlayerOnScreenUI('W');
     }
     else {
       this.currentPlayerColorStr='B';
-      this.switchPlayerOnScreen('B');
+      this.switchPlayerOnScreenUI('B');
     }
   }
 
@@ -368,7 +363,7 @@ export class ChessComponent implements OnInit {
     }
   }
 
-  //Restart the Chess Game
+  //reset the Chess Game
   restartGame(): void {
 
     //Back-end operations
@@ -378,8 +373,10 @@ export class ChessComponent implements OnInit {
 
     //Front-end operations
     this.cleanBoardMarks()
-    this.restartPieceGraveyardsUI();
-    this.restartGamePiecesUI();
+    this.resetPieceGraveyardsUI();
+    this.resetGamePiecesUI();
+    this.resetGameStatusesUI();
+    this.gameOver = false;
 
     //Switch Player
     this.newGame(); 
@@ -392,11 +389,24 @@ export class ChessComponent implements OnInit {
   * 
   */
 
+  //Switches Current Player on screen to opposite team
+  switchPlayerOnScreenUI(currentPlayerStr: string) {
+    let myTextSpan: HTMLElement = document.getElementById("currentPlayer");
+    if(currentPlayerStr == 'W') {
+      myTextSpan.innerHTML="White";
+    }
+    else {
+      myTextSpan.innerHTML="Black";
+    }
+  }
+
   //Updates UI with King's current status
   updateKingStatusUI(): void {
   if((this.myChessPieces[this.myChessPieces.length-2] as King).isCheckMate) {
     document.getElementById('whiteKingStatus').innerHTML = "Checkmate, Game Over";
-    return
+    this.gameOver = true;
+    this.gameOverUI("W");
+    return;
   }
   else if(this.whiteKingCheck) {
     document.getElementById('whiteKingStatus').innerHTML = "Check";
@@ -407,6 +417,8 @@ export class ChessComponent implements OnInit {
 
   if((this.myChessPieces[this.myChessPieces.length-1] as King).isCheckMate) {
     document.getElementById('blackKingStatus').innerHTML = "Checkmate, Game Over";
+    this.gameOver = true;
+    this.gameOverUI("B");
     return;
   }
   else if(this.blackKingCheck) {
@@ -417,7 +429,7 @@ export class ChessComponent implements OnInit {
   }
 }
   //Resets all pieces in chess game to original state
-  restartGamePiecesUI(): void {
+  resetGamePiecesUI(): void {
 
     //Create Special Pieces
     this.movePieceUIOnly("sqrRow1Col1", '♖');
@@ -455,15 +467,16 @@ export class ChessComponent implements OnInit {
   }
 
   //Moves piece without touching array of board
-  //Used for restarting game only
+  //Used for reseting game only
   movePieceUIOnly(sqrId: string, pieceStr: string) {
     let sqrObj = document.getElementById(sqrId);
     sqrObj.innerText="";
     let childSpan = document.createElement("SPAN");
     childSpan.innerHTML = pieceStr;
     childSpan.classList.add("chessPiece");
-    let myMediaMatch = window.matchMedia("(min-width: 1300px)");
+
     //Set piece styling based on screen size
+    let myMediaMatch = window.matchMedia("(min-width: 1300px)");
     if(myMediaMatch.matches) {
       childSpan.style.fontSize="52px";
       childSpan.style.lineHeight="40px";
@@ -477,7 +490,7 @@ export class ChessComponent implements OnInit {
 
   
   //Marks all pieces and keeps track of how many dead total so far
-  markPieceGraveyard(pieceType: string, isBlack: boolean): void {
+  markPieceGraveyardUI(pieceType: string, isBlack: boolean): void {
     if(pieceType === "Pawn") {
       if(!isBlack) {
           this.numWhitePiecesDeadList[0]++;
@@ -579,7 +592,7 @@ export class ChessComponent implements OnInit {
   }
 
   //Cleans Piece Graveyard and resets it to orignal state
-  restartPieceGraveyardsUI(): void {
+  resetPieceGraveyardsUI(): void {
     //White Pieces
     document.getElementById('whiteQueen1').style.color="#a3a3a3";
     document.getElementById('whiteRook1').style.color="#a3a3a3";
@@ -603,4 +616,30 @@ export class ChessComponent implements OnInit {
     document.getElementById('blackPawnNumber').innerHTML= "x0";
   }
 
+  //resets Game Statuses on the Screen to original state
+  resetGameStatusesUI(): void {
+    document.getElementById('whiteKingStatus').innerHTML= "Safe";
+    document.getElementById('blackKingStatus').innerHTML= "Safe";
+    document.getElementById("restartBtn").innerHTML = "Reset Game";
+    document.getElementById("gameStatus").innerHTML = "In Progress";
+  }
+
+  //Debug function used to trigger UI events when game is in checkmate/gameover
+  //state
+  setCheckmateManuallyTest(winColor: string): void {
+    this.gameOver = true;
+    this.gameOverUI(winColor);
+  }
+
+  //Changes UI elements when game is over
+  gameOverUI(winningPlayer: string): void {
+    if(winningPlayer === "W") {
+      document.getElementById('winningPlayer').innerHTML= "♔";
+    }
+    else {
+      document.getElementById('winningPlayer').innerHTML= "♚";
+    }
+    document.getElementById("restartBtn").innerHTML = "Play Again?";
+    document.getElementById("gameStatus").innerHTML = "Game Over";
+  }
 }
