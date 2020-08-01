@@ -57,28 +57,33 @@ export class ChessComponent implements OnInit {
     //Case 1: Click is a piece on your side so calculate movement possible
     //and mark board
     if((this.myChessBoard[row][col] == this.currentPlayerColorStr) || (this.myChessBoard[row][col] == (this.currentPlayerColorStr + 'K'))) {
-      if( this.existPiece(row, col) ) {
-        let pieceIndex: number = this.findChessPieceByRowCol(row, col);
-        this.cleanBoardMarks();
-        this.clickedPieceRow = row;
-        this.clickedPieceCol = col;
-        this.clickedPieceIndex = pieceIndex;
-        this.clickedPieceId = squareId;
-        if(this.myChessPieces[pieceIndex].type == 'King') {
-          if(this.currentPlayerColorStr == 'W') {
-            this.myChessPieces[pieceIndex].calculatePossibleMovements(this.myChessBoard, this.myChessPieces[pieceIndex].possibleMoveBoard, this.possibleBlackMovementsBoard);
+      if( this.existPiece(row, col)) {
+        if(!this.isInCheck(this.currentPlayerColorStr) || ((this.myChessBoard[row][col] == (this.currentPlayerColorStr + 'K')))) {
+          let pieceIndex: number = this.findChessPieceByRowCol(row, col);
+          this.cleanBoardMarks();
+          this.clickedPieceRow = row;
+          this.clickedPieceCol = col;
+          this.clickedPieceIndex = pieceIndex;
+          this.clickedPieceId = squareId;
+          if(this.myChessPieces[pieceIndex].type == 'King') {
+            if(this.currentPlayerColorStr == 'W') {
+              this.myChessPieces[pieceIndex].calculatePossibleMovements(this.myChessBoard, this.myChessPieces[pieceIndex].possibleMoveBoard, this.possibleBlackMovementsBoard);
+            }
+            else {
+              this.myChessPieces[pieceIndex].calculatePossibleMovements(this.myChessBoard, this.myChessPieces[pieceIndex].possibleMoveBoard, this.possibleWhiteMovementsBoard);
+            }
           }
           else {
-            this.myChessPieces[pieceIndex].calculatePossibleMovements(this.myChessBoard, this.myChessPieces[pieceIndex].possibleMoveBoard, this.possibleWhiteMovementsBoard);
+            this.myChessPieces[pieceIndex].calculatePossibleMovements(this.myChessBoard, this.myChessPieces[pieceIndex].possibleMoveBoard, null);
+            if(this.myChessPieces[pieceIndex].type == "Pawn") {
+              (this.myChessPieces[pieceIndex] as Pawn).calculatePossibleAttacks(this.myChessBoard, this.myChessPieces[pieceIndex].possibleMoveBoard);
+            }
           }
+          this.myChessPieces[pieceIndex].markPossibleMoveBoard();
         }
         else {
-          this.myChessPieces[pieceIndex].calculatePossibleMovements(this.myChessBoard, this.myChessPieces[pieceIndex].possibleMoveBoard, null);
-          if(this.myChessPieces[pieceIndex].type == "Pawn") {
-            (this.myChessPieces[pieceIndex] as Pawn).calculatePossibleAttacks(this.myChessBoard, this.myChessPieces[pieceIndex].possibleMoveBoard);
-          }
+          //Throw Message to move other piece, in check
         }
-        this.myChessPieces[pieceIndex].markPossibleMoveBoard();
       }
     }
     //Case 2: You've selected a piece already, validate if can move and move to space
@@ -89,12 +94,6 @@ export class ChessComponent implements OnInit {
       }
         this.moveChessPiece(squareId, row, col);
     }
-    //Case 3: You clicked on random or enemy space, clear and do nothing
-    //OR do nothing
-    else {
-
-    }
-    //console.log(squareId);
   }
 
   //Returns true if piece exists in given row and col
@@ -304,6 +303,25 @@ export class ChessComponent implements OnInit {
     for(let i = 0; i < this.myChessPieces.length; i++) {
       this.myChessPieces[i].clearPossibleMoveBoard();
     }
+    
+    this.possibleBlackMovementsBoard =
+                  [['','','','','','','','']
+                  ,['','','','','','','','']
+                  ,['','','','','','','','']
+                  ,['','','','','','','','']
+                  ,['','','','','','','','']
+                  ,['','','','','','','','']
+                  ,['','','','','','','','']
+                  ,['','','','','','','','']]; 
+this.possibleWhiteMovementsBoard =
+                    [['','','','','','','','']
+                    ,['','','','','','','','']
+                    ,['','','','','','','','']
+                    ,['','','','','','','','']
+                    ,['','','','','','','','']
+                    ,['','','','','','','','']
+                    ,['','','','','','','','']
+                    ,['','','','','','','','']];
   }
 
   //Functon needs to be updated to handle pieces that have been destroy
@@ -330,19 +348,24 @@ export class ChessComponent implements OnInit {
       }
     }
 
-    this.areKingsInCheck();
+    this.updateKingsInCheck();
 
     //White King
     this.myChessPieces[this.myChessPieces.length-2].calculatePossibleMovements(this.myChessBoard, this.possibleWhiteMovementsBoard, this.possibleBlackMovementsBoard);
     //Black King
     this.myChessPieces[this.myChessPieces.length-1].calculatePossibleMovements(this.myChessBoard, this.possibleBlackMovementsBoard, this.possibleWhiteMovementsBoard);
-
+    
+    console.log("White Moves\n")
+    console.log(this.possibleWhiteMovementsBoard);
+    console.log("Black Noves\n");
+    console.log(this.possibleBlackMovementsBoard);
+    
     this.updateKingStatusUI();
 
   }
 
   //Sets Kings as in check if applicable
-  areKingsInCheck(): void {
+  updateKingsInCheck(): void {
     if(this.possibleBlackMovementsBoard[this.myChessPieces[this.myChessPieces.length-2].row][this.myChessPieces[this.myChessPieces.length-2].column] == 'R') {
       this.whiteKingCheck = true;
       (this.myChessPieces[this.myChessPieces.length-2] as King).isInCheck = true;
@@ -361,6 +384,22 @@ export class ChessComponent implements OnInit {
       this.blackKingCheck = false;
       (this.myChessPieces[this.myChessPieces.length-1] as King).isInCheck = false;
     }
+  }
+
+  isInCheck(colorStr: string): boolean {
+    if(colorStr === 'W') {
+      if((this.myChessPieces[this.myChessPieces.length-2] as King).isInCheck === true) {
+        return true;
+      }
+      return false;
+    }
+    else if(colorStr === 'B') {
+      if((this.myChessPieces[this.myChessPieces.length-2] as King).isInCheck === true) {
+        return true;
+      }
+      return false;
+    }
+    return false;
   }
 
   //reset the Chess Game

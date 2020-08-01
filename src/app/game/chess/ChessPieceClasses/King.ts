@@ -115,7 +115,7 @@ export class King extends ChessPiece {
         //Right Horiz
         if(this.column+1 <= 7) {
           if( this.isSquareNotNextToKing(myChessBoard, this.row, this.column+1) 
-            && possibleEnemyMovementsBoard[this.row][this.column+1] == 'X') {
+            && possibleEnemyMovementsBoard[this.row][this.column+1] == '') {
             if(myChessBoard[this.row][this.column+1] == '') {
               markBoard[this.row][this.column+1] = 'X';
               possibleMoveFound = true;
