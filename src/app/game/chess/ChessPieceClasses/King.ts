@@ -29,8 +29,8 @@ export class King extends ChessPiece {
     let result2: boolean = this.calculateRightHorizVertMovements(myChessBoard, markBoard, possibleEnemyMovementsBoard);
     let result3: boolean = this.calculateUpDownVertMovements(myChessBoard, markBoard, possibleEnemyMovementsBoard);
 
-    //If no moves are possible AND (King can be hit OR last piece)
-    if((!result1 && !result2 && !result3) && (this.isInCheck || this.numSubordinates == 0) ) {
+    //Winning Condition: If no moves are possible AND last piece
+    if((!result1 && !result2 && !result3) && (this.numSubordinates == 0) ) {
       this.isCheckMate = true;
     }
   }

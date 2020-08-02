@@ -216,7 +216,7 @@ describe('ChessComponent', () => {
     component.myChessPieces[3] = new King(7, 4, true);
 
     (component.myChessPieces[3] as King).numSubordinates = 2;
-    (component.myChessPieces[2] as King).numSubordinates = 1;
+    (component.myChessPieces[2] as King).numSubordinates = 0;
     component.currentPlayerColorStr='B';
 
     

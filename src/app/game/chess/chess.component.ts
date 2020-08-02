@@ -54,11 +54,15 @@ export class ChessComponent implements OnInit {
     //Used for testing only, will be taken out
     //this.setCheckmateManuallyTest("W");
 
+    //Case 0: Game is over
+    if(this.gameOver) {
+      //do nothing until game resets
+    }
     //Case 1: Click is a piece on your side so calculate movement possible
     //and mark board
-    if((this.myChessBoard[row][col] == this.currentPlayerColorStr) || (this.myChessBoard[row][col] == (this.currentPlayerColorStr + 'K'))) {
+    else if((this.myChessBoard[row][col] == this.currentPlayerColorStr) || (this.myChessBoard[row][col] == (this.currentPlayerColorStr + 'K'))) {
       if( this.existPiece(row, col)) {
-        if(!this.isInCheck(this.currentPlayerColorStr) || ((this.myChessBoard[row][col] == (this.currentPlayerColorStr + 'K')))) {
+        if((!this.isInCheck(this.currentPlayerColorStr) || !this.isLastPiece(this.currentPlayerColorStr)) || ((this.myChessBoard[row][col] == (this.currentPlayerColorStr + 'K')))) {
           let pieceIndex: number = this.findChessPieceByRowCol(row, col);
           this.cleanBoardMarks();
           this.clickedPieceRow = row;
@@ -82,7 +86,7 @@ export class ChessComponent implements OnInit {
           this.myChessPieces[pieceIndex].markPossibleMoveBoard();
         }
         else {
-          //Throw Message to move other piece, in check
+
         }
       }
     }
@@ -219,6 +223,8 @@ export class ChessComponent implements OnInit {
 
   //Moves selected piece to destination square
   moveChessPiece(destId: string, destRow: number, destCol: number): void {
+
+    let inCheckBeforeMove = this.isInCheck(this.currentPlayerColorStr);
     
     let currentSqr = document.getElementById(this.clickedPieceId);
     let destSqr = document.getElementById(destId);
@@ -242,8 +248,21 @@ export class ChessComponent implements OnInit {
     this.cleanBoardMarks();
     this.clearAllPiecesPossibleMovement();
     this.calculateAllPossibleMoves();
-    //if(this.)
-    this.nextTurn();
+
+    //Win Condition: King in Check and enemy moved without
+    //removing check on King, game over
+    if(inCheckBeforeMove && this.isInCheck(this.currentPlayerColorStr)) {
+      this.gameOver = true;
+      if(this.currentPlayerColorStr === 'W') {
+        this.gameOverUI('B');
+      }
+      else {
+        this.gameOverUI('W');
+      }
+    }
+    if(!this.gameOver) {
+      this.nextTurn();
+    }
   }
 
 
@@ -386,6 +405,7 @@ this.possibleWhiteMovementsBoard =
     }
   }
 
+  //Returns true if player of given color is in check
   isInCheck(colorStr: string): boolean {
     if(colorStr === 'W') {
       if((this.myChessPieces[this.myChessPieces.length-2] as King).isInCheck === true) {
@@ -394,13 +414,29 @@ this.possibleWhiteMovementsBoard =
       return false;
     }
     else if(colorStr === 'B') {
-      if((this.myChessPieces[this.myChessPieces.length-2] as King).isInCheck === true) {
+      if((this.myChessPieces[this.myChessPieces.length-1] as King).isInCheck === true) {
         return true;
       }
       return false;
     }
     return false;
   }
+
+  //Return true there is only one piece of given color
+  isLastPiece(colorStr: string): boolean {
+    if(colorStr === 'W') {
+      if((this.myChessPieces[this.myChessPieces.length-2] as King).numSubordinates === 0) { 
+        return true;
+      }
+    }
+    else {
+      if((this.myChessPieces[this.myChessPieces.length-1] as King).numSubordinates === 0) { 
+        return true;
+      }
+    }
+    return false;
+  }
+
 
   //reset the Chess Game
   restartGame(): void {
@@ -442,7 +478,7 @@ this.possibleWhiteMovementsBoard =
   //Updates UI with King's current status
   updateKingStatusUI(): void {
   if((this.myChessPieces[this.myChessPieces.length-2] as King).isCheckMate) {
-    document.getElementById('whiteKingStatus').innerHTML = "Checkmate, Game Over";
+    document.getElementById('whiteKingStatus').innerHTML = "Checkmate";
     this.gameOver = true;
     this.gameOverUI("W");
     return;
@@ -455,7 +491,7 @@ this.possibleWhiteMovementsBoard =
   }
 
   if((this.myChessPieces[this.myChessPieces.length-1] as King).isCheckMate) {
-    document.getElementById('blackKingStatus').innerHTML = "Checkmate, Game Over";
+    document.getElementById('blackKingStatus').innerHTML = "Checkmate";
     this.gameOver = true;
     this.gameOverUI("B");
     return;
@@ -674,9 +710,11 @@ this.possibleWhiteMovementsBoard =
   gameOverUI(winningPlayer: string): void {
     if(winningPlayer === "W") {
       document.getElementById('winningPlayer').innerHTML= "♔";
+      document.getElementById('blackKingStatus').innerHTML="Checkmate";
     }
     else {
       document.getElementById('winningPlayer').innerHTML= "♚";
+      document.getElementById('whiteKingStatus').innerHTML="Checkmate";
     }
     document.getElementById("restartBtn").innerHTML = "Play Again?";
     document.getElementById("gameStatus").innerHTML = "Game Over";
