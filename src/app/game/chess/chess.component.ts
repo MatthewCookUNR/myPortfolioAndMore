@@ -374,10 +374,10 @@ this.possibleWhiteMovementsBoard =
     //Black King
     this.myChessPieces[this.myChessPieces.length-1].calculatePossibleMovements(this.myChessBoard, this.possibleBlackMovementsBoard, this.possibleWhiteMovementsBoard);
     
-    console.log("White Moves\n")
+    /*console.log("White Moves\n")
     console.log(this.possibleWhiteMovementsBoard);
     console.log("Black Noves\n");
-    console.log(this.possibleBlackMovementsBoard);
+    console.log(this.possibleBlackMovementsBoard);*/
     
     this.updateKingStatusUI();
 
