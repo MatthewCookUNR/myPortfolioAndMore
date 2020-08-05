@@ -1,45 +1,81 @@
+/*CSS for Meduim to Large Desktop*/
+@media only screen and (min-width: 1300px) {
+
+  .imgContainer {
+    height: 420px;
+  }
+  
+  p {
+    display: inline-block;
+    width: 550px;
+  }
+  
+  h2 {
+    margin-top: 60px;
+  }
+  
+  #djImg, #proxyImg, #coachImg  {
+    height: 300px;
+    width: 300px;
+    margin-top: 50px;
+  }
+}
+
+/*CSS for Small Desktop/IPad Pro*/
+@media only screen and (max-width: 1300px) {
+  .projectDesc, .progLanguages {
+    font-size: 0.75em;
+  }
+
+  .imgContainer {
+    height: 300px;
+  }
+  
+  p {
+    display: inline-block;
+    width: 350px;
+  }
+  
+  h2 {
+    margin-top: 35px;
+  }
+  
+  #djImg, #proxyImg, #coachImg  {
+    height: 200px;
+    width: 200px;
+    margin-top: 50px;
+  }
+}
+
+.projectContent {
+  width: 75%;
+  margin: auto;
+}
+
 body {
   text-align: center;
   font-family: Georgia, 'Times New Roman', Times, serif;
   border: #333333;
   border-style: solid;
   border-width: 10px;
-
-}
-
-.imgContainer {
-  height: 420px;
 }
 
 p {
   display: inline-block;
-  width: 550px;
 }
 
 h2 {
 display: inline-block;
-margin-top: 90px;
 }
 
 #djImg {
-  height: 300px;
-  width: 300px;
-  margin: 20px;
-  margin: 30px;
   float: left;
 }
 
 #proxyImg {
-  height: 300px;
-  width: 300px;
-  margin: 20px;
-  margin: 30px;
   float: left;
 }
 
 #coachImg {
-  height: 300px;
-  width: 500px;
-  margin: 30px;
   float: left;
 }
