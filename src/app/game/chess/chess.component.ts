@@ -42,7 +42,16 @@ export class ChessComponent implements OnInit {
   }
   
   ngAfterViewInit(): void {
-    this.newGame(); 
+    if(document.cookie) {
+      console.log(document.cookie);
+      this.printAllCookies();
+      this.loadGameFromCookie();
+    }
+    else {
+      console.log("No Cookies");
+      this.newGame();
+      this.newGameCookies();
+    }
   }
 
   //Handles on click of square events
@@ -445,6 +454,7 @@ this.possibleWhiteMovementsBoard =
     this.buildBoards();
     this.buildPieces();
     this.buildPiecesDead();
+    this.newGameCookies();
 
     //Front-end operations
     this.cleanBoardMarks()
@@ -719,4 +729,112 @@ this.possibleWhiteMovementsBoard =
     document.getElementById("restartBtn").innerHTML = "Play Again?";
     document.getElementById("gameStatus").innerHTML = "Game Over";
   }
+
+  /*
+  *
+  * Methods for using Cookies to store/load chess game state.
+  * 
+  */
+
+  
+    
+   byteLength(str) {
+    // returns the byte length of an utf8 string
+    var s = str.length;
+    for (var i=str.length-1; i>=0; i--) {
+      var code = str.charCodeAt(i);
+      if (code > 0x7f && code <= 0x7ff) s++;
+      else if (code > 0x7ff && code <= 0xffff) s+=2;
+      if (code >= 0xDC00 && code <= 0xDFFF) i--; //trail surrogate
+    }
+    return s;
+  }
+
+  //Function to set cookie with name, value, and expiration
+  setCookie(cookieName: string, value: string, expDays: number) {
+    var d = new Date();
+    d.setTime(d.getTime() + (expDays*24*60*60*1000));
+    var expires = "expires="+ d.toUTCString();
+    document.cookie = cookieName + "=" + value + ";" + expires + ";path=/";
+  }
+
+  //Function gets cookie value by name if it exists
+  getCookie(cookieName: string) {
+    let name: string = cookieName + "=";
+    let decodedCookie: string = decodeURIComponent(document.cookie);
+    let decodedCookieArray: string[] = decodedCookie.split(';');
+    for(let i = 0; i <decodedCookieArray.length; i++) {
+      let cookie: string = decodedCookieArray[i];
+      while (cookie.charAt(0) == ' ') {
+        cookie = cookie.substring(1);
+      }
+      if (cookie.indexOf(name) == 0) {
+        return cookie.substring(name.length, cookie.length);
+      }
+    }
+    return "";
+  }
+
+  newGameCookies(): void {
+
+    this.buildPieces();
+    this.buildBoards();
+    this.buildPiecesDead();
+
+    let stringPieces = JSON.stringify(this.myChessPieces)
+    console.log(this.byteLength(stringPieces));
+
+    //Strings
+    this.setCookie('currentPlayerColorStr', this.currentPlayerColorStr, 7);
+    this.setCookie('clickedPieceId', '', 7);
+    
+    //Numbers
+    this.setCookie('clickedPieceRow', (-1).toString(), 7);
+    this.setCookie('clickedPieceCol', (-1).toString(), 7);
+    this.setCookie('clickedPieceIndex', (-1).toString(), 7);
+
+    //Booleans
+    this.setCookie('blackKingCheck', "false", 7);
+    this.setCookie('whiteKingCheck', "false", 7);
+    this.setCookie('gameOver', "false", 7);
+
+    //Arrays or Objects (JSON-stringify)
+    this.setCookie('myChessBoard', JSON.stringify(this.myChessBoard), 7);
+    this.setCookie('possibleWhiteMovementsBoard', JSON.stringify(this.possibleWhiteMovementsBoard), 7);
+    this.setCookie('possibleBlackMovementsBoard', JSON.stringify(this.possibleBlackMovementsBoard), 7);
+    this.setCookie('myChessPieces', stringPieces, 7);
+    this.setCookie('numWhitePiecesDeadList', JSON.stringify(this.numWhitePiecesDeadList), 7);
+    this.setCookie('numBlackPiecesDeadList', JSON.stringify(this.numBlackPiecesDeadList), 7);
+
+
+  }
+
+  loadGameFromCookie(): void {
+    
+  }
+
+  printAllCookies(): void {
+        //Strings
+        console.log(this.getCookie('currentPlayerColorStr'));
+        console.log(this.getCookie('clickedPieceId'));
+        
+        //Numbers
+        console.log(this.getCookie('clickedPieceRow'));
+        console.log(this.getCookie('clickedPieceCol'));
+        console.log(this.getCookie('clickedPieceIndex'));
+    
+        //Booleans
+        console.log(this.getCookie('blackKingCheck'));
+        console.log(this.getCookie('whiteKingCheck'));
+        console.log(this.getCookie('gameOver'));
+    
+        //Arrays or Objects (JSON-stringify)
+        console.log(this.getCookie('myChessBoard'));
+        console.log(this.getCookie('possibleWhiteMovementsBoard'));
+        console.log(this.getCookie('possibleBlackMovementsBoard'));
+        console.log(this.getCookie('myChessPieces'));
+        console.log(this.getCookie('numWhitePiecesDeadList'));
+        console.log(this.getCookie('numBlackPiecesDeadList'));
+  }
+
 }
