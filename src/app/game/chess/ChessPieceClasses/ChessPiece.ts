@@ -3,16 +3,18 @@
 export abstract class ChessPiece {
 
   type: string;
+  strRep: string;
   isBlack: boolean;
   possibleMoveBoard: string[][];
   row: number;
   column: number;
 
-  constructor(row: number, column: number, isBlack: boolean) {
+  constructor(row: number, column: number, isBlack: boolean, strRep: string) {
       this.type = "Generic Chess Piece";
       this.row = row;
       this.column = column;
       this.isBlack = isBlack;
+      this.strRep = strRep;
       this.possibleMoveBoard =
                         [['','','','','','','','']
                         ,['','','','','','','','']
