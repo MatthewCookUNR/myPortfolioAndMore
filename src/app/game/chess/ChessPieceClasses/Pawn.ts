@@ -4,8 +4,8 @@ export class Pawn extends ChessPiece {
 
   isFirstMovement: boolean;
 
-  constructor(row: number, column: number, isBlack: boolean) {
-      super(row,column,isBlack);
+  constructor(row: number, column: number, isBlack: boolean, strRep: string) {
+      super(row,column,isBlack, strRep);
       this.isFirstMovement = true;
       this.type = "Pawn";
   }
