@@ -34,13 +34,8 @@ export class ChessComponent implements OnInit {
   gameOver: boolean = false;
 
   constructor() {
-    //this.newGameBuildPieces();
-    //this.buildBoards();
-    //this.buildPiecesDead();
-    //this.clickedPieceIndex = -1;
-
     // provide your access key and secret access key as obtained in the previous step
-    AWS.config.credentials = new AWS.Credentials('************', '************', null);
+    AWS.config.credentials = new AWS.Credentials('********', '********', null);
     AWS.config.update({
     region: 'us-west-2'
     });

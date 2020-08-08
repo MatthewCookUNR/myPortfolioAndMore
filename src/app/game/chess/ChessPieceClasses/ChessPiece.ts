@@ -1,4 +1,3 @@
-
 //Parent Class for Chess pieces
 export abstract class ChessPiece {
 
