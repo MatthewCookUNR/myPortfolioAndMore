@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ChessPiece} from "./chessPieceClasses/ChessPiece";
+import {ChessPiece} from "./ChessPieceClasses/ChessPiece";
 import {Pawn} from "./ChessPieceClasses/Pawn"
 import { Rook } from './ChessPieceClasses/Rook';
 import { Knight } from './ChessPieceClasses/Knight';
