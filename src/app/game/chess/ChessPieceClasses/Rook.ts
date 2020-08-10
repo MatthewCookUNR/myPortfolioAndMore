@@ -2,8 +2,8 @@ import { ChessPiece } from "./ChessPiece";
 
 export class Rook extends ChessPiece {
   
-  constructor(row: number, column: number, isBlack: boolean, strRep: string) {
-    super(row,column,isBlack, strRep);
+  constructor(row: number, column: number, isBlack: boolean) {
+    super(row,column,isBlack);
     this.type = "Rook";
   }
 

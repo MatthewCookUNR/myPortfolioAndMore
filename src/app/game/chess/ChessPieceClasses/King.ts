@@ -16,8 +16,8 @@ export class King extends ChessPiece {
             ,['','','','','','','','']
             ,['','','','','','','','']];
   
-  constructor(row: number, column: number, isBlack: boolean, strRep: string) {
-    super(row,column,isBlack, strRep);
+  constructor(row: number, column: number, isBlack: boolean) {
+    super(row,column,isBlack);
     this.type = "King";
   }
 
