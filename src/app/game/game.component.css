@@ -9,8 +9,38 @@ body {
   min-height: 300px;
 }
 
+/*CSS for Meduim to Large Desktop*/
+@media only screen and (min-width: 1300px) {
+  .experienceImg  {
+    height: 300px;
+    width: 300px;
+  }
+}
+
+/*CSS for Small Desktop/IPad Pro*/
+@media only screen and (max-width: 1300px) { 
+  .experienceImg  {
+    height: 200px;
+    width: 200px;
+  }
+}
+
 header {
   text-align: center;
+  margin-bottom: 50px;
+}
+
+p {
+  display: inline-block;
+  font-size: 32px;
+  margin: 0px 30px;
+  font-weight: bold;
+}
+
+#gameChoiceImages {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 select {

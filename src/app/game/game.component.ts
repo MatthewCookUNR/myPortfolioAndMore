@@ -34,9 +34,15 @@ export class GameComponent implements OnInit, AfterViewInit {
     try {
       if( gameType === "TicTacToe" ) {
         factory = this.resolver.resolveComponentFactory(TicTacToeComponent);
+        document.getElementById("gameChoiceImages").style.display = "none";
       }
       else if(gameType === "Chess") {
         factory = this.resolver.resolveComponentFactory(ChessComponent);
+        document.getElementById("gameChoiceImages").style.display = "none";
+      }
+      else if (gameType === "Pick a Game!") {
+        document.getElementById("gameChoiceImages").style.display = "flex";
+        throw new Error("Not valid game type");
       }
       else {
         throw new Error("Not valid game type");
