@@ -8,6 +8,7 @@ import { ProjectsComponent } from './projects/projects.component';
 import { GameComponent } from './game/game.component';
 import { TicTacToeComponent } from './game/tic-tac-toe/tic-tac-toe.component';
 import { ChessComponent } from './game/chess/chess.component';
+import { ExperienceComponent } from './experience/experience.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { ChessComponent } from './game/chess/chess.component';
     ProjectsComponent,
     GameComponent,
     TicTacToeComponent,
-    ChessComponent
+    ChessComponent,
+    ExperienceComponent
   ],
   entryComponents: [TicTacToeComponent],
   imports: [
