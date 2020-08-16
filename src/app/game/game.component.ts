@@ -42,7 +42,6 @@ export class GameComponent implements OnInit, AfterViewInit {
       }
       else if (gameType === "Pick a Game!") {
         document.getElementById("gameChoiceImages").style.display = "flex";
-        throw new Error("Not valid game type");
       }
       else {
         throw new Error("Not valid game type");
