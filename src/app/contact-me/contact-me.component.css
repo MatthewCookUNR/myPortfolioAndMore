@@ -1,0 +1,56 @@
+body {
+  border: #333333;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  border-style: solid;
+  border-top-style: none;
+  overflow:auto;
+  border-width: 20px;
+  min-height: 300px;
+}
+
+.contactMeContainer {
+  padding: 50px 20px;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.contactMeContent {
+  text-align: center;
+  width: 85%;
+  min-width: 900px;
+  margin: 0 auto;
+}
+
+textarea, input {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.contactInfo {
+  margin-bottom: 20px;
+}
+
+
+.contactMeField {
+  border: 1px solid #e5e5e5;
+  border-radius: 5px;
+  outline: 0;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  font-size: 16px;
+  display: block;
+  width: 85%;
+}
+
+.submitBtn {
+  padding: 18px 35px;
+  background-color: aqua;
+  border-radius: 5px;
+  border: 0;
+  color: #000;
+  font-size: 15px;
+  cursor: pointer;
+  font-family: Roboto,sans-serif;
+}

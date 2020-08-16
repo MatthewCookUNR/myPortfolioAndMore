@@ -31,8 +31,6 @@ li {
 
 ul #name {
   color: turquoise;
-  font-family: Georgia;
-  font-size: 32px;
 }
 
 .pageLinks {
@@ -47,11 +45,6 @@ ul #name {
     padding: 20px;
     font-size: 1.5em;
   }
-
-  ul #name {
-    font-size: 1.75em;
-  }
-  
 }
 
 /*CSS for Small Desktop/IPad Pro*/
@@ -59,9 +52,5 @@ ul #name {
   li {
     padding: 15px;
     font-size: 1.15em;
-  }
-
-  ul #name {
-    font-size: 1.35em;
   }
 }

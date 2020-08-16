@@ -10,6 +10,7 @@ import { TicTacToeComponent } from './game/tic-tac-toe/tic-tac-toe.component';
 import { ChessComponent } from './game/chess/chess.component';
 import { ExperienceComponent } from './experience/experience.component';
 import { AboutMeComponent } from './about-me/about-me.component';
+import { ContactMeComponent } from './contact-me/contact-me.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { AboutMeComponent } from './about-me/about-me.component';
     TicTacToeComponent,
     ChessComponent,
     ExperienceComponent,
-    AboutMeComponent
+    AboutMeComponent,
+    ContactMeComponent
   ],
   entryComponents: [TicTacToeComponent],
   imports: [
