@@ -12,35 +12,45 @@ body {
   font-weight: bold;
 }
 
-#oncoreImg {
-  margin-top: 0px;
+
+.experienceImg {
+  border-radius: 150px;
 }
 
 /*CSS for Meduim to Large Desktop*/
 @media only screen and (min-width: 1300px) {
   .experienceImg  {
-    height: 200px;
-    width: 200px;
-    margin-top: 50px;
+    height: 300px;
+    width: 300px;
   }
-  body {
-    margin-top: 70px;
+
+  p {
+    width: 50%;
+    margin: auto; 
+    text-align: justify;
+  }
+
+  .aboutMeContent {
+    margin-top: 50px;
+    margin-bottom: 50px;
   }
 }
 
 /*CSS for Small Desktop/IPad Pro*/
 @media only screen and (max-width: 1300px) { 
   .experienceImg  {
-    height: 150px;
-    width: 150px;
-    margin-top: 50px;
+    height: 200px;
+    width: 200px;
   }
-  body {
-    margin-top: 50px;
-  }
-}
 
-p {
-  width: 550px;
-  margin: auto;
+  .aboutMeContent {
+    margin-top: 35px;
+    margin-bottom: 35px;
+  }
+
+  p {
+    width: 50%;
+    margin: auto; 
+    text-align: justify;
+  }
 }

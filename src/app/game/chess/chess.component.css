@@ -283,10 +283,6 @@ table {
 
 /*OTHER CSS*/
 
-body {
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-}
-
 .currentGameStatus, #gameStatusStatic {
   font-weight: bold;
 }
