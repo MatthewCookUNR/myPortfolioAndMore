@@ -3,21 +3,20 @@
 
   .projectContainer {
     height: 420px;
+    margin-top: 50px;
   }
-  
+
   p {
-    display: inline-block;
-    width: 550px;
+    margin-left: 330px;
   }
-  
+
   h2 {
-    margin-top: 60px;
+    padding-top: 50px;
   }
-  
+
   #djImg, #proxyImg, #coachImg  {
     height: 300px;
     width: 300px;
-    margin-top: 50px;
   }
 }
 
@@ -29,26 +28,31 @@
 
   .projectContainer {
     height: 300px;
-  }
-  
-  p {
-    display: inline-block;
-    width: 350px;
-  }
-  
-  h2 {
     margin-top: 35px;
   }
-  
+
+  p {
+    margin-left: 220px;
+  }
+
+  h2 {
+    font-size: 1.25em;
+    padding-top: 10px;
+  }
+
+  h3 {
+    font-size: 1.00em;
+  }
+    
+
   #djImg, #proxyImg, #coachImg  {
     height: 200px;
     width: 200px;
-    margin-top: 50px;
   }
 }
 
 .projectContent {
-  width: 75%;
+  width: 65%;
   margin: auto;
 }
 
@@ -61,14 +65,16 @@ body {
   margin-top: 0px;
   margin-bottom: 0px;
   border-width: 20px;
-}
-
-p {
-  display: inline-block;
+  overflow: auto;
 }
 
 h2 {
-display: inline-block;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+p {
+  margin-top: 0px;
 }
 
 #djImg {
