@@ -28,6 +28,9 @@ export class TicTacToeComponent implements OnInit {
     this.drawBoard()
     this.chooseRandomPlayer();
     this.writeMessage("Player " + this.currentPlayer + " turn");
+    if(this.gameOver) {
+      document.getElementById("restartBtn").innerHTML = 'Restart Game?';
+    }
     this.gameOver = false;
   }
 
@@ -62,9 +65,7 @@ export class TicTacToeComponent implements OnInit {
     this.context.beginPath();
     this.context.moveTo(xpos-25, ypos-25);
     this.context.lineTo(xpos+25, ypos+25);
-    this.context.stroke();
 
-    this.context.beginPath();
     this.context.moveTo(xpos-25, ypos+25);
     this.context.lineTo(xpos+25, ypos-25);
     this.context.stroke();
@@ -113,6 +114,7 @@ export class TicTacToeComponent implements OnInit {
       this.writeMessage("Player " + this.currentPlayer + " turn");
     }
     this.checkForWinner();
+    this.checkForCatsGame();
   }
 
   //Checks to see who if there is a winner and displays if there is one
@@ -125,6 +127,7 @@ export class TicTacToeComponent implements OnInit {
       {
         if(this.ticTacBoard[0][i] != 'Z') {
           this.writeMessage("Player " + this.ticTacBoard[0][i] + " wins!");
+          document.getElementById("restartBtn").innerHTML = 'Play Again?';
           this.gameOver = true;
           return;
         }
@@ -138,6 +141,7 @@ export class TicTacToeComponent implements OnInit {
       {
         if(this.ticTacBoard[i][0] != 'Z') {
           this.writeMessage("Player " + this.ticTacBoard[i][0] + " wins!");
+          document.getElementById("restartBtn").innerHTML = 'Play Again?';
           this.gameOver = true;
           return;
         }
@@ -149,6 +153,7 @@ export class TicTacToeComponent implements OnInit {
     {
       if(this.ticTacBoard[0][0] != 'Z') { 
         this.writeMessage("Player " + this.ticTacBoard[0][0] + " wins!");
+        document.getElementById("restartBtn").innerHTML = 'Play Again?';
         this.gameOver = true;
         return;
       }
@@ -159,10 +164,24 @@ export class TicTacToeComponent implements OnInit {
     {
       if(this.ticTacBoard[0][2] != 'Z') {
         this.writeMessage("Player " + this.ticTacBoard[0][2] + " wins!");
+        document.getElementById("restartBtn").innerHTML = 'Play Again?';
         this.gameOver = true;
         return;
       }
     }
+  }
+  
+  checkForCatsGame() {
+    for(let i = 0; i < 3; i++) {
+      for(let j = 0; j < 3; j++) {
+        if(this.ticTacBoard[i][j] === "Z") {
+          return;
+        }
+      }
+    }
+    this.writeMessage("No Winner!");
+    document.getElementById("restartBtn").innerHTML = 'Play Again?';
+    this.gameOver = true;
   }
 
   //Function handles functionality when board is clicked
@@ -196,10 +215,17 @@ export class TicTacToeComponent implements OnInit {
   //Function writes given message to bottom of the board
   writeMessage(message)
   {
+    let xPos = 0;
+    if(message === "No Winner!") {
+      xPos = 70;
+    }
+    else {
+      xPos = 60;
+    }
     this.context.beginPath();
     this.context.clearRect(0, 300, 300, 200);
     this.context.font = "30px Arial";
-    this.context.fillText(message, 75, 350);
+    this.context.fillText(message, xPos, 350);
   }
 
   //Function takes mouse position coordinates and translates
